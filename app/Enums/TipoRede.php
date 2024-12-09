@@ -8,7 +8,7 @@ enum TipoRede
     case TRIFASICO;
     public static function values()
     {
-        return array_map( fn($item) => $item->value, TipoRede::cases() );
+        return array_map( fn(TipoRede $item) => $item->name, TipoRede::cases() );
     }
 
     public function label()

@@ -19,9 +19,11 @@ class Create extends Component
     }
     public function submit()
     {
-        $this->form->save();
-        $this->dialog()->success("Salvo com sucesso!");
+        $cliente = $this->form->save();
+        $this->notification()->success(__('Created.'));
+        $this->redirect(route('pedido.create', [ 'cliente' => $cliente->id ]));
     }
+    
     public function render()
     {
         return view('livewire.app.cliente.create');

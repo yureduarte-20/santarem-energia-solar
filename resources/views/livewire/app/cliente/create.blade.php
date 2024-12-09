@@ -1,6 +1,6 @@
 <div>
     <form wire:submit='submit'>
-        <div class="grid mb-2 lg:grid-cols-2 grid-cols-1 lg:gap-2 gap-1">
+        <div class="grid mb-2 lg:grid-cols-3 grid-cols-1 lg:gap-2 gap-1">
             <div>
                 <x-input label="Nome" wire:model='form.nome' />
             </div>
@@ -33,7 +33,15 @@
                 <x-input label="Cidade" wire:loading.attr='disable' wire:model='form.endereco.cidade' />
             </div>
             <div>
-                <x-input label="Cidade" wire:loading.attr='disable' wire:model='form.endereco.uf' />
+                <x-input label="UF" wire:loading.attr='disable' wire:model='form.endereco.uf' />
+            </div>
+            <div>
+                <x-native-select label="Tipo de Telhado" wire:model='form.endereco.tipo_telhado'>
+                    <option value>Selecione um tipo de telhado</option>
+                    @foreach (\App\Enums\TipoTelhado::cases() as $tipo)
+                        <option value="{{$tipo->name}}">{{$tipo->label()}}</option>
+                    @endforeach
+                </x-native-select>
             </div>
         </div>
         <div wire:loading wire:target='updatedForm' class="flex w-full mx-auto justify-center items-center">

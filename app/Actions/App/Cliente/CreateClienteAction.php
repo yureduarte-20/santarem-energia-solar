@@ -1,6 +1,7 @@
 <?php
 namespace App\Actions\App\Cliente;
 
+use App\Enums\TipoTelhado;
 use App\Models\Cliente;
 use Illuminate\Database\Events\TransactionBeginning;
 use Validator;
@@ -20,7 +21,8 @@ class CreateClienteAction
             'endereco.bairro' => 'nullable|string|min:3',
             'endereco.cidade' => 'required|string|min:3',
             'endereco.uf' => 'required|string|max:2',
-            'endereco.cep' => 'required|string|max:8'
+            'endereco.cep' => 'required|string|max:10',
+            'endereco.tipo_telhado' => 'required|in:'.join(',',TipoTelhado::values())
         ];
     }
     public function __invoke(array $input)
@@ -28,6 +30,9 @@ class CreateClienteAction
         $data = Validator::make($input, $this->getRules())->validate();
 
         return tap(Cliente::create($data), function(Cliente $cliente) use($data){
+            if($data['endereco'] and isset($data['endereco']['cep'])){
+                $data['endereco']['cep'] = str($data['endereco']['cep'])->replace(['-', '.'], '')->trim();
+            }
             $cliente->endereco()->create($data['endereco']);
         });
     }

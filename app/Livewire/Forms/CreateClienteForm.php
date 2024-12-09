@@ -24,8 +24,7 @@ class CreateClienteForm extends Form
     {
         $validated = $this->validate();
         $action = new CreateClienteAction;
-        $action($validated);
-        $this->reset();
+        return tap($action($validated), fn() => $this->reset());
     }
     public function update()
     {

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('cidade');
             $table->string('uf', 2);
             $table->morphs('addressable');
+            $table->string('tipo_telhado')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

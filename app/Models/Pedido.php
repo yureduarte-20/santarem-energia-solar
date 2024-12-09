@@ -5,6 +5,54 @@ namespace App\Models;
 use App\Enums\TipoRede;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * 
+ *
+ * @property int $id
+ * @property string $numero
+ * @property \Illuminate\Support\Carbon $data_pedido
+ * @property \Illuminate\Support\Carbon $previsao_entrega
+ * @property \Illuminate\Support\Carbon|null $data_entrega
+ * @property int $user_id
+ * @property int $qtde_contratado
+ * @property int $qtde_entregue
+ * @property int $cliente_id
+ * @property string $valor_contratual
+ * @property string $valor
+ * @property string|null $descricao
+ * @property TipoRede $tipo_rede
+ * @property bool $entregue
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $deleted_at
+ * @property-read \App\Models\Cliente $cliente
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Engenheiro> $homologacao_engenheiros
+ * @property-read int|null $homologacao_engenheiros_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PedidoDocumento> $pedido_documentos
+ * @property-read int|null $pedido_documentos_count
+ * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Pedido newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Pedido newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Pedido query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Pedido whereClienteId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Pedido whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Pedido whereDataEntrega($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Pedido whereDataPedido($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Pedido whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Pedido whereDescricao($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Pedido whereEntregue($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Pedido whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Pedido whereNumero($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Pedido wherePrevisaoEntrega($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Pedido whereQtdeContratado($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Pedido whereQtdeEntregue($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Pedido whereTipoRede($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Pedido whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Pedido whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Pedido whereValor($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Pedido whereValorContratual($value)
+ * @mixin \Eloquent
+ */
 class Pedido extends Model
 {
     protected $fillable = [
@@ -41,5 +89,10 @@ class Pedido extends Model
     {
         return $this->hasMany(PedidoDocumento::class);
     }
-
+    public function homologacao_engenheiros() 
+    {
+        return $this->belongsToMany(Engenheiro::class, 'homologacao_engenheiros')
+        ->withPivot(['data'])
+        ->withTimestamps();
+    }
 }

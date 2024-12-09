@@ -47,6 +47,28 @@
                             <span :class="{ 'lg:hidden': !isSidebarOpen }">{{ __('Dashboard') }}</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ route('cliente.index') }}"
+                           wire:navigate
+                           class="flex items-center p-2 space-x-2 text-white rounded-md hover:bg-primary-700 hover:font-bold"
+                           :class="{'justify-center': !isSidebarOpen}">
+                            <div class="p-2 text-white rounded-full bg-primary-700">
+                                <x-icon name="user" class="w-4 h-4"/>
+                            </div>
+                            <span :class="{ 'lg:hidden': !isSidebarOpen }">{{ __('Customers') }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('engenheiro.index') }}"
+                           wire:navigate
+                           class="flex items-center p-2 space-x-2 text-white rounded-md hover:bg-primary-700 hover:font-bold"
+                           :class="{'justify-center': !isSidebarOpen}">
+                            <div class="p-2 text-white rounded-full bg-primary-700">
+                                <x-icon.eng class="w-4 h-4"/>
+                            </div>
+                            <span :class="{ 'lg:hidden': !isSidebarOpen }">{{ __('Engineers') }}</span>
+                        </a>
+                    </li>
                 </ul>
             </nav>
 

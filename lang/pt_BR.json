@@ -159,5 +159,8 @@
   "You may delete any of your existing tokens if they are no longer needed.": "Você deve deletar os tokens sem utilização.",
   "Your email address is unverified.": "Seu endereço de e-mail não foi verificado.",
   "Photo": "Foto",
-  "Customers":"Clientes"
+  "Customers":"Clientes",
+  "Engineers":"Engenheiros",
+  "Engineer": "Engenheiro",
+  "Orders":"Pedidos/Projetos"
 }

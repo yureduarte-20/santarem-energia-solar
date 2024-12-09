@@ -8,6 +8,31 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Query\Builder;
 
+/**
+ * 
+ *
+ * @property int $id
+ * @property int $pedido_id
+ * @property int $tipo_documento_id
+ * @property bool $entregue
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $deleted_at
+ * @property-read \App\Models\Arquivo|null $arquivo
+ * @property-read \App\Models\Pedido $pedido
+ * @property-read \App\Models\TipoDocumento $tipo_documento
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PedidoDocumento newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PedidoDocumento newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PedidoDocumento query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PedidoDocumento whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PedidoDocumento whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PedidoDocumento whereEntregue($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PedidoDocumento whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PedidoDocumento wherePedidoId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PedidoDocumento whereTipoDocumentoId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PedidoDocumento whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class PedidoDocumento extends Model implements Arquivable
 {
     protected $fillable =['pedido_id', 'tipo_documento_id', 'entregue'];
