@@ -24,12 +24,16 @@ class Create extends Component
     public $data_pedido;
     public $previsao_entrega;
     public $numero;
-    public $engenheiros_homologacao ;
+    public $engenheiros_homologacao = null ;
     public $qtde_contratado;
     public $qtde_entregue;
     public $valor_contratual;
     public $valor;
     public $tipo_rede;
+    public function mount()
+    {
+        $this->user_id = auth()->user()->id;
+    }
 
     public function getRules()
     {
@@ -40,11 +44,11 @@ class Create extends Component
             'user_id' => 'required|exists:users,id',
             'previsao_entrega' => 'required|date|after_or_equal:data_pedido',
             'qtde_contratado' => 'required|numeric|min:1',
-            'qtde_entregue' => 'required|numeric|min:1',
+            'qtde_entregue' => 'required|numeric|min:0',
             'valor_contratual' => 'required|numeric',
             'valor' => 'required|numeric',
             'tipo_rede' => 'required|in:' . join(',', TipoRede::values()),
-            'engenheiros_homologacao' => 'required|exists:engenheiros,id',
+            'engenheiros_homologacao' => 'nullable|exists:engenheiros,id',
             'documentos.*' => 'required|exists:tipo_documentos,id'
         ];
     }
@@ -54,7 +58,7 @@ class Create extends Component
         $validated = $this->validate($this->getRules());
         DB::transaction(function () use ($validated) {
             $pedido = Pedido::create($validated);
-            $pedido->homologacao_engenheiros()->attach($validated['engenheiros_homologacao']);
+            $validated['engenheiros_homologacao'] and $pedido->homologacao_engenheiros()->attach($validated['engenheiros_homologacao']);
             foreach($validated['documentos'] as $doc_id)
             {
                 $pedido->pedido_documentos()->create(['tipo_documento_id' => $doc_id]);

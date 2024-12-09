@@ -10,12 +10,13 @@
             <x-input label="Data do Pedido" wire:model='data_pedido' type="date" />
         </div>
         <div>
-            <x-input label="Previsão de Entrega" wire:model='data_previsao' type="date" />
+            <x-input label="Previsão de Entrega" wire:model='previsao_entrega' type="date" />
         </div>
         <div>
             <x-native-select label="Vendedor" wire:model='user_id'>
+                <option value>Selecione um vendedor</option>
                 @foreach (\App\Models\User::all() as $user)
-                    <option @if (Auth::user()->id == $user->id) selected @endif value="{{ $user->id }}">
+                    <option value="{{ $user->id }}">
                         {{ $user->name }}</option>
                 @endforeach
             </x-native-select>
@@ -39,22 +40,25 @@
                 label="Documentos Obrigatórios" option-label="nome" />
         </div>
         <div>
-            <x-input 
+            <x-input
             type="number" min="0"
             label="Quantidade KIT Contratado" wire:model='qtde_contratado' />
         </div>
         <div>
-            <x-input 
+            <x-input
             min="0" label="Quantidade KIT Entregue" wire:model='qtde_entregue' />
         </div>
         <div>
-            <x-native-select label="AUMENTO DE CARGA 220 DA PRINCIPAL" >
+            <x-native-select label="AUMENTO DE CARGA 220 DA PRINCIPAL" wire:model="tipo_rede" >
                 <option value>Selecione </option>
                 @foreach ( \App\Enums\TipoRede::cases() as $tipo)
-                    <option value="{{$tipo->name}}" >{{$tipo->label()}}</option>    
+                    <option value="{{$tipo->name}}" >{{$tipo->label()}}</option>
                 @endforeach
-                
+
             </x-native-select>
         </div>
+    </div>
+    <div class="mt-2">
+        <x-button label="Salvar" wire:click="create" color="primary" icon="save" />
     </div>
 </div>
