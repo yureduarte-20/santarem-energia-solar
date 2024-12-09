@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pedido;
 use App\Models\PedidoDocumento;
-use CreateArquivoAction;
+use App\Actions\App\Arquivo\CreateArquivoAction;
 use Illuminate\Http\Request;
 
 class DocumentosUploadController
@@ -16,11 +16,16 @@ class DocumentosUploadController
         ]);
         $request->file();
         $action  = new CreateArquivoAction;
-        
+
         $action->from_uploaded_file(
             $pedidoDocumento,
             $validated['arquivo']
         );
 
+        if($request->wantsJson()){
+            return response()->json([ 'message' => 'Arquivo enviado com sucesso!' ]);
+        }
+        session()->flash('success', 'Arquivo enviado com sucesso!');
+        return back()->with('success', 'Arquivo enviado com sucesso!');
     }
 }

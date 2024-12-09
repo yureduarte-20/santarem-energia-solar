@@ -1,9 +1,10 @@
 <?php
-
+namespace App\Actions\App\Arquivo;
 use App\Interfaces\Arquivable;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Str;
 
 class CreateArquivoAction
 {

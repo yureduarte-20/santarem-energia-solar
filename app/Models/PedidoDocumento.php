@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Query\Builder;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property int $pedido_id
@@ -51,6 +51,9 @@ class PedidoDocumento extends Model implements Arquivable
     }
     public function createNewArchive(array $input) : Model
     {
+        $this->update([
+            'entregue' => true
+        ]);
         return $this->arquivo()->create($input);
     }
     public function getRelationshipBuilder(): MorphOne|MorphMany

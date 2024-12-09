@@ -22,5 +22,14 @@ class TipoDocumentoSeeder extends Seeder
         TipoDocumento::createOrFirst([
             'nome' => 'Contrato'
         ]);
+        TipoDocumento::createOrFirst([
+            'nome' => 'RG'
+        ]);
+        TipoDocumento::createOrFirst([
+            'nome' => 'CPF'
+        ]);
+        TipoDocumento::createOrFirst([
+            'nome' => 'Informações do KIT'
+        ]);
     }
 }
