@@ -2,10 +2,11 @@
 
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\PedidoController;
+use App\Http\Controllers\TipoDocumentoController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
 Route::middleware([
@@ -35,5 +36,13 @@ Route::middleware([
             Route::view('/create', 'app.pedido.create')->name('create');
             Route::get('/', 'index')->name('index');
             Route::get('/{pedido}', 'edit')->name('edit');
+        });
+
+    Route::controller(TipoDocumentoController::class)
+        ->prefix('tipo-documento')
+        ->name('tipo-documento.')
+        ->group(function () {
+            Route::post('/', 'store')->name('store');
+            Route::get("/search", 'search')->name('search');
         });
 });

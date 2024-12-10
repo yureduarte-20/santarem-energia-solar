@@ -29,5 +29,5 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class TipoDocumento extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['name'];
+    protected $fillable = ['nome'];
 }

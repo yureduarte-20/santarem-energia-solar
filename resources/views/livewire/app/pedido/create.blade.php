@@ -35,9 +35,36 @@
             <x-inputs.currency label="Valor" icon="currency-dollar" thousands="." decimal="," precision="2"
                 wire:model='valor' />
         </div>
-        <div>
-            <x-select multiselect :options="$documentos_disp" wire:model='documentos' option-value="id"
-                label="Documentos Obrigatórios" option-label="nome" />
+        <div x-data="{
+            createTipoDocumento(nome){
+                if(nome){
+                    axios.post(`{{route('tipo-documento.store')}}`, {nome})
+                    .then(d => $wireui.notify({
+                        title:'Cadastrado com sucesso!',
+                        icon:'success'
+                    }))
+                    .catch(e => $wireui.notify({
+                        title:'Falha ao tentar cadastrar',
+                        description: e.response?.data?.message,
+                        icon:'error'
+                    }))
+                    .finally(() => $wire.$refresh())
+                }
+            }
+        }">
+            <x-select multiselect :async-data="route('tipo-documento.search')" wire:model='documentos' option-value="id"
+                label="Documentos Obrigatórios" option-label="nome" >
+                
+                <x-slot name="afterOptions" class="p-2 flex justify-center" x-show="displayOptions.length === 0">
+                    <x-button
+                        x-on:click="createTipoDocumento(search)"
+                        primary
+                        flat
+                        full>
+                        <span x-html="`Criar <b>${search}</b>`"></span>
+                    </x-button>
+                </x-slot>
+                </x-select>
         </div>
         <div>
             <x-input
@@ -61,4 +88,5 @@
     <div class="mt-2">
         <x-button label="Salvar" wire:click="create" color="primary" icon="save" />
     </div>
+
 </div>

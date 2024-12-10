@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\StatusPedido;
 use App\Enums\TipoRede;
 use App\Models\User;
 use App\Models\Cliente;
@@ -28,6 +29,7 @@ return new class extends Migration {
             $table->text('descricao')->nullable();
             $table->enum('tipo_rede', TipoRede::values());
             $table->boolean('entregue')->default(false);
+            $table->string('status')->default(StatusPedido::ENVIAR_ENGENHEIRO->name);
             $table->timestamps();
             $table->softDeletes();
         });
