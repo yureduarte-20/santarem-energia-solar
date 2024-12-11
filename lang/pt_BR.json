@@ -162,5 +162,6 @@
   "Customers":"Clientes",
   "Engineers":"Engenheiros",
   "Engineer": "Engenheiro",
-  "Orders":"Pedidos/Projetos"
+  "Orders":"Pedidos/Projetos",
+  "Users":"Usuários"
 }

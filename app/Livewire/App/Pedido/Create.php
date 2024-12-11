@@ -26,10 +26,11 @@ class Create extends Component
     public $numero;
     public $engenheiros_homologacao = null ;
     public $qtde_contratado;
-    public $qtde_entregue;
+    public $qtde_pedido;
     public $valor_contratual;
     public $valor;
     public $tipo_rede;
+    public $descricao;
     public function mount()
     {
         $this->user_id = auth()->user()->id;
@@ -44,12 +45,13 @@ class Create extends Component
             'user_id' => 'required|exists:users,id',
             'previsao_entrega' => 'required|date|after_or_equal:data_pedido',
             'qtde_contratado' => 'required|numeric|min:1',
-            'qtde_entregue' => 'required|numeric|min:0',
+            'qtde_pedido' => 'required|numeric|min:0',
             'valor_contratual' => 'required|numeric',
             'valor' => 'required|numeric',
             'tipo_rede' => 'required|in:' . join(',', TipoRede::values()),
             'engenheiros_homologacao' => 'nullable|exists:engenheiros,id',
-            'documentos.*' => 'required|exists:tipo_documentos,id'
+            'documentos.*' => 'required|exists:tipo_documentos,id',
+            'descricao' => 'nullable'
         ];
     }
 
@@ -63,9 +65,20 @@ class Create extends Component
             {
                 $pedido->pedido_documentos()->create(['tipo_documento_id' => $doc_id]);
             }
-            $this->dialog()->success(__("Created."));
+            $this->dialog([
+                'icon' => 'success',
+                'title' => __('Created.'),
+                'onClose' =>[
+                    'method' => 'redirectTo',
+                    'params' => route('pedido.edit', $pedido->id)
+                ]
+            ]);
             $this->reset();
         });
+    }
+    public function redirectTo($url)
+    {
+        return $this->redirect($url);
     }
 
     public function render()

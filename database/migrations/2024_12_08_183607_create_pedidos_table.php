@@ -22,7 +22,7 @@ return new class extends Migration {
             $table->date('data_entrega')->nullable();
             $table->foreignIdFor(User::class)->constrained();
             $table->unsignedInteger('qtde_contratado');
-            $table->unsignedInteger('qtde_entregue');
+            $table->unsignedInteger('qtde_pedido');
             $table->foreignIdFor(Cliente::class)->constrained();
             $table->decimal('valor_contratual', 8, 2);
             $table->decimal('valor', 8, 2);

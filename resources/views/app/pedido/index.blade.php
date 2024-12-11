@@ -1,5 +1,11 @@
 <x-app-layout>
     <x-general.dashboard title="{{__('Orders')}}">
+        <section class="mb-2">
+            <x-button 
+            icon="plus"
+            color="primary"
+            label="Criar" x-on:click="Livewire.navigate('{{route('pedido.create')}}')" />
+        </section>
         <x-table.data-table>
             <x-slot name="headerColumns">
                 <x-table.header-column>Nome</x-table.header-column>
@@ -11,13 +17,18 @@
                 <x-table.header-column></x-table.header-column>
             </x-slot>
             <x-slot name="dataRows">
-                @foreach($pedidos as $p)
+                @forelse($pedidos as $p)
                     <x-table.data-row>
                         <x-table.data-column>
-                            <div class="flex flex-col">
+                            <div class="flex flex-col gap-1">
                                 @if($p->pedido_documentos()->where('entregue', false)->exists())
                                     <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-red-500 text-white">Documentação pendente</span>
                                 @endif
+                                <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-gray-500 text-white">
+                                    {{$p->status->label()}}
+                                </span>
+
+                                <span>N°: {{$p->numero}}</span>
                                 <span>{{$p->cliente->nome}}</span>
                             </div>
                         </x-table.data-column>
@@ -31,7 +42,19 @@
                             <x-button icon="pencil" :href="route('pedido.edit', $p)" color="primary"/>
                         </x-table.data-column>
                     </x-table.data-row>
-                @endforeach
+                    @empty
+                    <x-table.data-row>
+                        <x-table.data-column>
+                            Sem Pedidos
+                        </x-table.data-column>
+                        <x-table.data-column></x-table.data-column>
+                        <x-table.data-column></x-table.data-column>
+                        <x-table.data-column></x-table.data-column>
+                        <x-table.data-column> </x-table.data-column>
+                        <x-table.data-column></x-table.data-column>
+                        <x-table.data-column></x-table.data-column>
+                    </x-table.data-row>
+                @endforelse
             </x-slot>
             <x-slot name="footer">
                 {{$pedidos->links()}}

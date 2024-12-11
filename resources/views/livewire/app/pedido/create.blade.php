@@ -21,18 +21,18 @@
                 @endforeach
             </x-native-select>
         </div>
-        <x-select label="Homologação do Engenheiro">
+        <x-select label="Homologação do Engenheiro" wire:model='engenheiros_homologacao'>
             @foreach ($engenheiros as $eng)
                 <x-select.option label="{{ $eng->nome }}" value="{{ $eng->id }}" />
             @endforeach
         </x-select>
 
         <div>
-            <x-inputs.currency label="Valor contratual" icon="currency-dollar" thousands="." decimal=","
+            <x-inputs.currency label="VALOR DO PROJETO FINAL" icon="currency-dollar" thousands="." decimal=","
                 wire:model='valor_contratual' precision="2" />
         </div>
         <div>
-            <x-inputs.currency label="Valor" icon="currency-dollar" thousands="." decimal="," precision="2"
+            <x-inputs.currency label="VALOR DO KIT" icon="currency-dollar" thousands="." decimal="," precision="2"
                 wire:model='valor' />
         </div>
         <div x-data="{
@@ -69,11 +69,11 @@
         <div>
             <x-input
             type="number" min="0"
-            label="Quantidade KIT Contratado" wire:model='qtde_contratado' />
+            label="QTD MODULOS NO CONTRATO" wire:model='qtde_contratado' />
         </div>
         <div>
             <x-input
-            min="0" label="Quantidade KIT Entregue" wire:model='qtde_entregue' />
+            min="0" label="QTD MODULOS NO PEDIDO" wire:model='qtde_pedido' />
         </div>
         <div>
             <x-native-select label="AUMENTO DE CARGA 220 DA PRINCIPAL" wire:model="tipo_rede" >

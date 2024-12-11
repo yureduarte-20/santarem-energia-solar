@@ -22,29 +22,31 @@
                 @endforeach
             </x-native-select>
         </div>
-        <x-select label="Homologação do Engenheiro">
-            @foreach ($engenheiros as $eng)
-                <x-select.option label="{{ $eng->nome }}" value="{{ $eng->id }}"/>
-            @endforeach
+        <x-select
+        :options="$engenheiros"
+        option-label="nome"
+        option-value="id"
+        label="Homologação do Engenheiro" wire:model='engenheiros_homologacao'>
+           
         </x-select>
 
         <div>
-            <x-inputs.currency label="Valor contratual" icon="currency-dollar" thousands="." decimal=","
+            <x-inputs.currency label="VALOR DO PROJETO FINAL" icon="currency-dollar" thousands="." decimal=","
                                wire:model='valor_contratual' precision="2"/>
         </div>
         <div>
-            <x-inputs.currency label="Valor" icon="currency-dollar" thousands="." decimal="," precision="2"
+            <x-inputs.currency label="VALOR DO KIT" icon="currency-dollar" thousands="." decimal="," precision="2"
                                wire:model='valor'/>
         </div>
 
         <div>
             <x-input
                 type="number" min="0"
-                label="Quantidade KIT Contratado" wire:model='qtde_contratado'/>
+                label="QTD MODULOS NO CONTRATO" wire:model='qtde_contratado'/>
         </div>
         <div>
             <x-input
-                min="0" label="Quantidade KIT Entregue" wire:model='qtde_entregue'/>
+                min="0" label="QTD MODULOS NO PEDIDO" wire:model='qtde_pedido'/>
         </div>
         <div>
             <x-native-select label="AUMENTO DE CARGA 220 DA PRINCIPAL" wire:model="tipo_rede">
@@ -55,8 +57,36 @@
 
             </x-native-select>
         </div>
+        <div class="pt-5">
+            @switch($pedido->status)
+                @case(\App\Enums\StatusPedido::ENVIAR_ENGENHEIRO)
+                    <x-button color="primary"
+                    wire:click="updateStatus('{{\App\Enums\StatusPedido::ENVIADO_ENGENHEIRO->name}}')"
+                    label="Enviar para engenherio" />
+                @break
+                @case(\App\Enums\StatusPedido::ENVIADO_ENGENHEIRO)
+                    <x-button label="Finalizar o projeto" 
+                    color="primary"
+                    x-on:confirm="{
+                        id:'encerrar',
+                        'title':'Deseja declarar com entregue?',
+                        method:'updateStatus',
+                        params:'{{\App\Enums\StatusPedido::FINALIZADO->name}}'
+                    }"
+                
+                    />
+                @break
+            
+                @default
+                    
+            @endswitch
+        </div>
     </div>
     <div class="mt-2">
-        <x-button label="Salvar" wire:click="edit" color="primary" icon="save"/>
+        <x-button label="Salvar" wire:click="save" color="primary" icon="save"/>
     </div>
+
+    <x-dialog id="encerrar">
+        <x-input type="date" label="Data de Entrega" wire:model='data_entrega' />
+    </x-dialog>
 </div>

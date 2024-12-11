@@ -69,6 +69,29 @@
                             <span :class="{ 'lg:hidden': !isSidebarOpen }">{{ __('Engineers') }}</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ route('pedido.index') }}"
+                           wire:navigate
+                           class="flex items-center p-2 space-x-2 text-white rounded-md hover:bg-primary-700 hover:font-bold"
+                           :class="{'justify-center': !isSidebarOpen}">
+                            <div class="p-2 text-white rounded-full bg-primary-700">
+                                <x-icon name="archive" class="w-4 h-4"/>
+                            </div>
+                            <span :class="{ 'lg:hidden': !isSidebarOpen }">{{ __('Orders') }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('user.index') }}"
+                           wire:navigate
+                           class="flex items-center p-2 space-x-2 text-white rounded-md hover:bg-primary-700 hover:font-bold"
+                           :class="{'justify-center': !isSidebarOpen}">
+                            <div class="p-2 text-white rounded-full bg-primary-700">
+                                <x-icon name="users" class="w-4 h-4"/>
+                            </div>
+                            <span :class="{ 'lg:hidden': !isSidebarOpen }">{{ __('Users') }}</span>
+                        </a>
+                    </li>
+                    
                 </ul>
             </nav>
 

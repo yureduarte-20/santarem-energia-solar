@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\StatusPedido;
 use App\Enums\TipoRede;
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,7 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $data_entrega
  * @property int $user_id
  * @property int $qtde_contratado
- * @property int $qtde_entregue
+ * @property int $qtde_pedido
  * @property int $cliente_id
  * @property string $valor_contratual
  * @property string $valor
@@ -62,19 +63,21 @@ class Pedido extends Model
         'data_entrega',
         'user_id',
         'qtde_contratado',
-        'qtde_entregue',
+        'qtde_pedido',
         'cliente_id', 
         'valor_contratual',
         'valor',
         'descricao',
         'tipo_rede',
         'entregue',
+        'status'
     ];
     protected $casts = [
         'tipo_rede' => TipoRede::class,
         'data_entrega' => 'date:Y-m-d',
         'previsao_entrega' => 'date:Y-m-d',
         'data_pedido' => 'date:Y-m-d',
+        'status' => StatusPedido::class
     ];
     public function user()
     {
