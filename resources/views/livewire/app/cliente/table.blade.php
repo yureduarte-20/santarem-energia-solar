@@ -22,7 +22,7 @@
                         {{ $eng->cpf }}
                     </x-table.data-column>
                     <x-table.data-column>
-                        <x-button color="secondary" icon="pencil" />
+                        <x-button color="secondary" icon="pencil" x-on:click="Livewire.navigate('{{route('cliente.edit', $eng)}}')" />
                     </x-table.data-column>
                 </x-table.data-row>
             @endforeach

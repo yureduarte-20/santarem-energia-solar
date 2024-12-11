@@ -19,4 +19,8 @@ class ClienteController extends Controller
             ->get(['nome', 'id']);
         return response()->json($results);
     }
+    public function edit(Cliente $cliente)
+    {
+        return view('app.cliente.edit', compact('cliente'));
+    }
 }

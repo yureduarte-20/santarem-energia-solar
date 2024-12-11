@@ -17,9 +17,15 @@ Route::middleware([
 ])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::view('/clientes', 'app.cliente.index')->name('cliente.index');
-    Route::view('/clientes/create', 'app.cliente.create')->name('cliente.create');
-    Route::get('/clientes/search', [ClienteController::class, 'search'])->name('cliente.search');
+    Route::controller(ClienteController::class)
+    ->prefix('clientes')        
+    ->name('cliente.')
+    ->group(function () {
+        Route::view('/', 'app.cliente.index')->name('index');
+        Route::view('/create', 'app.cliente.create')->name('create');
+        Route::get('/search', [ClienteController::class, 'search'])->name('search');
+        Route::get('/{cliente}/edit', 'edit')->name('edit');
+    });
 
     Route::name('engenheiro.')
         ->prefix('engenheiro')

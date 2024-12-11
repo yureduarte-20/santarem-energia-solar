@@ -17,7 +17,7 @@ class Table extends Component
     public function render()
     {
         return view('livewire.app.cliente.table', [
-            'clientes' => Cliente::when($this->query, fn($query) => $query->where('nome', 'like', '%'.$query.'%')
+            'clientes' => Cliente::when($this->query, fn($query) => $query->where('nome', 'like', '%'.$this->query.'%')
             ->orWhere('cpf', 'like', $this->query."%") )
             ->paginate(10)
         ]);
