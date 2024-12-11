@@ -20,7 +20,7 @@ class CreateClienteForm extends Form
         return (new CreateClienteAction)->getRules();
     }
 
-    public function save()
+    public function save(): mixed
     {
         $validated = $this->validate();
         $action = new CreateClienteAction;

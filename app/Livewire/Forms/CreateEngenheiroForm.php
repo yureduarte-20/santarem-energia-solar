@@ -17,7 +17,7 @@ class CreateEngenheiroForm extends AbstractForm
         return (new CreateEngenheiroAction)->getRules();
     }
 
-    public function save()
+    public function save(): mixed
     {
         $action = new CreateEngenheiroAction;
         return tap(

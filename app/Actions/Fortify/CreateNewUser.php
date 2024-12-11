@@ -2,6 +2,7 @@
 
 namespace App\Actions\Fortify;
 
+use App\Actions\App\Mail\NotifyNewUserAction;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -25,11 +26,14 @@ class CreateNewUser implements CreatesNewUsers
             'password' => $this->passwordRules(),
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
         ])->validate();
-
-        return User::create([
+        
+        return tap( User::create([
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
-        ]);
+        ]), function ($user) use ($input){
+                $action = new NotifyNewUserAction;
+                $action($user->email, $input['password']);
+        });
     }
 }

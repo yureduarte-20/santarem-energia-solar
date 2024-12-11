@@ -45,4 +45,5 @@ Route::middleware([
             Route::post('/', 'store')->name('store');
             Route::get("/search", 'search')->name('search');
         });
+    Route::view('usuarios','app.user.index')->name('user.index');
 });
