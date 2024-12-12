@@ -13,7 +13,7 @@
         </x-slot>
         <x-slot name="dataRows">
             @forelse ($engs as $eng)
-                <x-table.data-row>
+                <x-table.data-row wire:key='engenheiro_{{$eng->id}}'>
                     <x-table.data-column>
                         {{ $eng->nome }}
                     </x-table.data-column>
@@ -23,7 +23,7 @@
                     <x-table.data-column>
                         <x-button icon="pencil" color="primary" wire:click="editModal('{{$eng->id}}')" />
                         <x-button class="ml-2" icon="trash"
-                            wire:ignore
+                            wire:ignore.self
                             color="negative"
                             x-on:confirm="{
                                 title:'Tem certeza que deseja deletar este engenheiro?',
