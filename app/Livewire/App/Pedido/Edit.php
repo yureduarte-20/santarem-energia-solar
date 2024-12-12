@@ -58,7 +58,7 @@ class Edit extends Component
             $this->all()
         );
         if($this->engenheiros_homologacao){
-            $this->pedido->homologacao_engenheiros()->attach(
+            $this->pedido->homologacao_engenheiros()->sync(
                 $this->engenheiros_homologacao
             );
         } else {
