@@ -61,8 +61,14 @@
             @switch($pedido->status)
                 @case(\App\Enums\StatusPedido::ENVIAR_ENGENHEIRO)
                     <x-button color="primary"
-                    wire:click="updateStatus('{{\App\Enums\StatusPedido::ENVIADO_ENGENHEIRO->name}}')"
-                    label="Enviar para engenherio" />
+                    x-on:confirm="{
+                        id:'encerrar',
+                        'title':'Deseja declarar com entregue ao engenheiro?',
+                        description:'Deseja declarar que o projeto foi encaminhado ao engenheiro?',
+                        method:'updateStatus',
+                        params:''{{\App\Enums\StatusPedido::ENVIADO_ENGENHEIRO->name}}''
+                    }"
+                    label="Declarar que enviou para engenherio" />
                 @break
                 @case(\App\Enums\StatusPedido::ENVIADO_ENGENHEIRO)
                     <x-button label="Finalizar o projeto" 
@@ -70,6 +76,7 @@
                     x-on:confirm="{
                         id:'encerrar',
                         'title':'Deseja declarar com entregue?',
+                        description:'Deseja declarar como projeto finalizado?',
                         method:'updateStatus',
                         params:'{{\App\Enums\StatusPedido::FINALIZADO->name}}'
                     }"
