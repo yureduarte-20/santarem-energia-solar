@@ -60,7 +60,6 @@
                     </li>
                     <li>
                         <a href="{{ route('engenheiro.index') }}"
-                          
                            class="flex items-center p-2 space-x-2 text-white rounded-md hover:bg-primary-700 hover:font-bold"
                            :class="{'justify-center': !isSidebarOpen}">
                             <div class="p-2 text-white rounded-full bg-primary-700">
