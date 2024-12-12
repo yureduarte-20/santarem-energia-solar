@@ -4,7 +4,7 @@ namespace App\Enums;
 enum TipoRede
 {
     case MONOFASICO;
-    case BISAFICO;
+    case BIFASICO;
     case TRIFASICO;
     public static function values()
     {
@@ -15,7 +15,7 @@ enum TipoRede
     {
         return match ($this) {
             TipoRede::MONOFASICO => __('Monofásico'),
-            TipoRede::BISAFICO=> __('Bifásico'),
+            TipoRede::BIFASICO=> __('Bifásico'),
             TipoRede::TRIFASICO => __('Trifásico'),
         };
     }
