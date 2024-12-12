@@ -81,6 +81,29 @@
                     
             @endswitch
         </div>
+        <div class="lg:col-span-3">
+            <x-textarea label="Observações" wire:model='descricao'></x-textarea>
+        </div>
+        <div class="lg:col-span-3">
+            <h3>Rateios</h3>
+            <x-button icon="plus" color="primary" label="Adicionar Pessoa Vinculada ao rateio" wire:click='addRateio' />
+            @if ($rateios)
+                @foreach ($rateios as $key => $rat)
+                    <div  wire:key="rateio_{{ $rat['nome'] }}" class="w-full mt-2 flex lg:flex-row flex-col gap-1 items-center">
+                        <div class="w-full">
+                            <x-input label="Nome"  wire:model="rateios.{{ $key }}.nome" />
+                        </div>
+                        <div class="lg:mt-5 mt-1 w-full lg:w-max">
+                            <x-button icon="trash" class="w-full lg:w-max" color="negative"
+                                wire:click="removeRateio('{{ $key }}')" />
+                        </div>
+                    </div>
+                @endforeach
+                @else
+                <p class="text-gray-500">Sem pessoas vinculadas ao rateio</p>
+            @endif
+            <hr class="mt-3" />
+        </div>
     </div>
     <div class="mt-2">
         <x-button label="Salvar" wire:click="save" color="primary" icon="save"/>

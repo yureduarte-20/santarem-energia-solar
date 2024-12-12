@@ -29,7 +29,9 @@ return new class extends Migration {
             $table->text('descricao')->nullable();
             $table->enum('tipo_rede', TipoRede::values());
             $table->boolean('entregue')->default(false);
-            $table->string('status')->default(StatusPedido::ENVIAR_ENGENHEIRO->name);
+            $table->string('status')
+                ->nullable()
+                ->default(StatusPedido::ENVIAR_ENGENHEIRO->name);
             $table->timestamps();
             $table->softDeletes();
         });

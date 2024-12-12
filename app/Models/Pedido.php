@@ -98,4 +98,8 @@ class Pedido extends Model
         ->withPivot(['data'])
         ->withTimestamps();
     }
+    public function rateios()
+    {
+        return $this->hasMany(Rateio::class);
+    }
 }

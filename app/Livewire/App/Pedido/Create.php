@@ -31,9 +31,22 @@ class Create extends Component
     public $valor;
     public $tipo_rede;
     public $descricao;
+    public $rateios;
     public function mount()
     {
         $this->user_id = auth()->user()->id;
+    }
+
+    public function addRateio()
+    {
+        $this->rateios = $this->rateios ?? [];
+        array_push($this->rateios, [ 'nome' => null ]);
+    }
+    public function removeRateio($key)
+    {
+        if($this->rateios and array_key_exists($key, $this->rateios)){
+            unset($this->rateios[$key]);
+        }
     }
 
     public function getRules()
@@ -48,10 +61,12 @@ class Create extends Component
             'qtde_pedido' => 'required|numeric|min:0',
             'valor_contratual' => 'required|numeric',
             'valor' => 'required|numeric',
-            'tipo_rede' => 'required|in:' . join(',', TipoRede::values()),
+            'tipo_rede' => 'nullable|in:' . join(',', TipoRede::values()),
             'engenheiros_homologacao' => 'nullable|exists:engenheiros,id',
             'documentos.*' => 'required|exists:tipo_documentos,id',
-            'descricao' => 'nullable'
+            'descricao' => 'nullable|min:3',
+            'rateios' => 'nullable|array',
+            'rateios.*.nome' => 'required|min:3'
         ];
     }
 
@@ -64,6 +79,12 @@ class Create extends Component
             foreach($validated['documentos'] as $doc_id)
             {
                 $pedido->pedido_documentos()->create(['tipo_documento_id' => $doc_id]);
+            }
+            $rateios = $validated['rateios'];
+            if($rateios){
+                foreach($rateios as $rateio){
+                    $pedido->rateios()->create($rateio);
+                }
             }
             $this->dialog([
                 'icon' => 'success',

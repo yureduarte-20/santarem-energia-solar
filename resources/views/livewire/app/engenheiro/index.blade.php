@@ -9,6 +9,7 @@
         <x-slot name="headerColumns">
             <x-table.header-column>Nome</x-table.header-column>
             <x-table.header-column>Cpf</x-table.header-column>
+            <x-table.header-column></x-table.header-column>
         </x-slot>
         <x-slot name="dataRows">
             @foreach ($engs as $eng)
@@ -18,6 +19,9 @@
                     </x-table.data-column>
                     <x-table.data-column>
                         {{ $eng->cpf }}
+                    </x-table.data-column>
+                    <x-table.data-column>
+                        <x-button icon="pencil" color="primary" wire:click="editModal('{{$eng->id}}')" />
                     </x-table.data-column>
                 </x-table.data-row>
             @endforeach
@@ -37,6 +41,20 @@
         </div>
         <x-slot name="footer" >
             <x-button label="Criar" color="primary" wire:click='create' />
+            <x-button label="Cancelar" x-on:click="close" />
+        </x-slot>
+    </x-modal.card>
+    <x-modal.card wire:model.defer='updateModal' title="Atualizar dados do engenheiro">
+        <div class="grid lg:grid-rows-2 grid-rows-1 gap-2">
+            <div>
+                <x-input label="Nome" wire:model='formUpdate.nome' />
+            </div>
+            <div>
+                <x-inputs.maskable mask="###.###.###-##" label="CPF" wire:model='formUpdate.cpf' />
+            </div>
+        </div>
+        <x-slot name="footer" >
+            <x-button label="Criar" color="primary" wire:click='edit' />
             <x-button label="Cancelar" x-on:click="close" />
         </x-slot>
     </x-modal.card>

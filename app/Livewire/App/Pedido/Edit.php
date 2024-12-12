@@ -32,15 +32,28 @@ class Edit extends Component
     public $valor_contratual;
     public $valor;
     public $tipo_rede;
-
+    public $descricao;
+    public $rateios;
+    public function addRateio()
+    {
+        $this->rateios = $this->rateios ?? [];
+        array_push($this->rateios, [ 'nome' => null ]);
+    }
+    public function removeRateio($key)
+    {
+        if($this->rateios and array_key_exists($key, $this->rateios)){
+            unset($this->rateios[$key]);
+        }
+    }
     public function mount(Pedido $pedido)
     {
         $this->pedido = $pedido;
         $this->fill($this->pedido->toArray());
         $this->engenheiros_homologacao = $this->pedido->homologacao_engenheiros->pluck('id')->first();
+        $this->rateios = $this->pedido->rateios?->toArray();
     }
     public function save(){
-        $this->validate($this->getRules());
+        $validated = $this->validate($this->getRules());
         $this->pedido->update(
             $this->all()
         );
@@ -50,6 +63,13 @@ class Edit extends Component
             );
         } else {
             $this->pedido->homologacao_engenheiros()->detach();
+        }
+        $this->pedido->rateios()->delete();
+        $rateios = $validated['rateios'];
+        if($rateios){
+            foreach($rateios as $rateio){
+                $this->pedido->rateios()->create($rateio);
+            }
         }
         $this->notification()->success("Atualizado com sucesso!");
     }
@@ -66,8 +86,11 @@ class Edit extends Component
             'qtde_pedido' => 'required|numeric|min:0',
             'valor_contratual' => 'required|numeric',
             'valor' => 'required|numeric',
-            'tipo_rede' => 'required|in:' . join(',', TipoRede::values()),
+            'tipo_rede' => 'nullable|in:' . join(',', TipoRede::values()),
             'engenheiros_homologacao' => 'nullable|exists:engenheiros,id',
+            'descricao' => 'nullable',
+             'rateios' => 'nullable|array',
+            'rateios.*.nome' => 'required|min:3'
         ];
     }
     public function updateStatus(string $status)
