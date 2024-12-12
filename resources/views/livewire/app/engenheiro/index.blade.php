@@ -23,7 +23,7 @@
                     <x-table.data-column>
                         <x-button icon="pencil" color="primary" wire:click="editModal('{{$eng->id}}')" />
                         <x-button class="ml-2" icon="trash"
-                            wire:ignore.self
+                           
                             color="negative"
                             x-on:confirm="{
                                 title:'Tem certeza que deseja deletar este engenheiro?',
