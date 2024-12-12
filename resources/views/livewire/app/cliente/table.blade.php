@@ -13,7 +13,7 @@
             <x-table.header-column></x-table.header-column>
         </x-slot>
         <x-slot name="dataRows">
-            @foreach ($clientes as $eng)
+            @forelse($clientes as $eng)
                 <x-table.data-row>
                     <x-table.data-column>
                         {{ $eng->nome }}
@@ -25,7 +25,19 @@
                         <x-button color="secondary" icon="pencil" x-on:click="Livewire.navigate('{{route('cliente.edit', $eng)}}')" />
                     </x-table.data-column>
                 </x-table.data-row>
-            @endforeach
+                @empty
+                <x-table.data-row>
+                    <x-table.data-column>
+                        Sem Clientes cadastrados
+                    </x-table.data-column>
+                    <x-table.data-column>
+                        
+                    </x-table.data-column>
+                    <x-table.data-column>
+                        
+                    </x-table.data-column>
+                </x-table.data-row>
+            @endforelse
         </x-slot>
         <x-slot name="footer">
             {{ $clientes->links() }}

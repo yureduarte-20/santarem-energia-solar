@@ -12,7 +12,7 @@
             <x-table.header-column></x-table.header-column>
         </x-slot>
         <x-slot name="dataRows">
-            @foreach ($engs as $eng)
+            @forelse ($engs as $eng)
                 <x-table.data-row>
                     <x-table.data-column>
                         {{ $eng->nome }}
@@ -24,7 +24,19 @@
                         <x-button icon="pencil" color="primary" wire:click="editModal('{{$eng->id}}')" />
                     </x-table.data-column>
                 </x-table.data-row>
-            @endforeach
+                @empty
+                <x-table.data-row>
+                    <x-table.data-column>
+                        Sem engenheiros cadastrados
+                    </x-table.data-column>
+                    <x-table.data-column>
+                        
+                    </x-table.data-column>
+                    <x-table.data-column>
+                        
+                    </x-table.data-column>
+                </x-table.data-row>
+            @endforelse
         </x-slot>
         <x-slot name="footer">
             {{ $engs->links() }}
