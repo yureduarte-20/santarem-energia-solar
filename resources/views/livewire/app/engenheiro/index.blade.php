@@ -22,6 +22,15 @@
                     </x-table.data-column>
                     <x-table.data-column>
                         <x-button icon="pencil" color="primary" wire:click="editModal('{{$eng->id}}')" />
+                        <x-button class="ml-2" icon="trash"
+                            wire:ignore
+                            color="negative"
+                            x-on:confirm="{
+                                title:'Tem certeza que deseja deletar este engenheiro?',
+                                description:'Essa ação não pode ser desfeita!',
+                                method:'delete',
+                                params: '{{$eng->id}}'
+                            }" />
                     </x-table.data-column>
                 </x-table.data-row>
                 @empty

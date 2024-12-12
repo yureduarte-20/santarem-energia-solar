@@ -22,7 +22,7 @@ class Index extends Component
         $this->formCreate->verify();
         $this->formCreate->save();
         $this->createModal = false;
-        $this->notification()->success(__('Created'));
+        $this->notification()->success(__('Created.'));
     }
     public function editModal($id)
     {
@@ -37,6 +37,18 @@ class Index extends Component
         $this->formUpdate->reset();
         $this->updateModal = false;
         $this->notification()->success('Atualizado com sucesso!');
+    }
+    public function delete($id)
+    {
+        $engenheiro = Engenheiro::where(['id' => $id])->firstOrFail();
+        if($engenheiro->whereHas('pedidos')->exists()){
+            $this->notification()->error(
+                'Não foi possível apagar',
+                'O engenheiro em questão possui projetos vinculados'
+            );
+            return;
+        }
+        $engenheiro->delete();
     }
     public function render()
     {
