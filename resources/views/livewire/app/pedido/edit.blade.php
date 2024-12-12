@@ -62,7 +62,7 @@
                 @case(\App\Enums\StatusPedido::ENVIAR_ENGENHEIRO)
                     <x-button color="primary"
                     x-on:confirm="{
-                        id:'encerrar',
+                
                         'title':'Deseja declarar com entregue ao engenheiro?',
                         description:'Deseja declarar que o projeto foi encaminhado ao engenheiro?',
                         method:'updateStatus',
