@@ -14,6 +14,7 @@ class Documento extends Component
     use Actions;
     public Pedido $pedido;
     public $modalUpload = false;
+    public $modalDocumento = false;
     public $tipoDocumento;
 
     public function mount(Pedido $pedido)
@@ -24,22 +25,23 @@ class Documento extends Component
     }
     public function addDocumento()
     {
-       $this->validate(['tipoDocumento' => 'required|exists:App\Models\TipoDocumento,id']);
+        $this->validate(['tipoDocumento' => 'required|exists:App\Models\TipoDocumento,id']);
         $this->pedido->pedido_documentos()->create([
             'tipo_documento_id' => $this->tipoDocumento
         ]);
         $this->notification()->success('Documento adicionado');
+        $this->modalDocumento = false;
     }
     public function download($id)
     {
         $doc = PedidoDocumento::find($id);
-        if($doc->arquivo?->path and Storage::exists($doc->arquivo->path)){
+        if ($doc->arquivo?->path and Storage::exists($doc->arquivo->path)) {
             return Storage::download($doc->arquivo->path, $doc->arquivo->nome);
         }
     }
     public function render()
     {
-        return view('livewire.app.pedido.documento',[
+        return view('livewire.app.pedido.documento', [
             'tipo_documentos' => TipoDocumento::all()
         ]);
     }
