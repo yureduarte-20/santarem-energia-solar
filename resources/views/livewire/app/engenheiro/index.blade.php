@@ -25,12 +25,12 @@
                         <x-button class="ml-2" icon="trash"
                            
                             color="negative"
-                            x-on:confirm="{
+                            x-on:click="$wireui.dialog({
                                 title:'Tem certeza que deseja deletar este engenheiro?',
                                 description:'Essa ação não pode ser desfeita!',
                                 method:'delete',
                                 params: '{{$eng->id}}'
-                            }" />
+                            })" />
                     </x-table.data-column>
                 </x-table.data-row>
                 @empty
