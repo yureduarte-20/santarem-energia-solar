@@ -66,7 +66,7 @@
                         'title':'Deseja declarar com entregue ao engenheiro?',
                         description:'Deseja declarar que o projeto foi encaminhado ao engenheiro?',
                         method:'updateStatus',
-                        params:''{{\App\Enums\StatusPedido::ENVIADO_ENGENHEIRO->name}}''
+                        params:'{{\App\Enums\StatusPedido::ENVIADO_ENGENHEIRO->name}}'
                     }"
                     label="Declarar que enviou para engenherio" />
                 @break
