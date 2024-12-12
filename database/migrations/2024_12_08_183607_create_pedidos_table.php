@@ -27,11 +27,9 @@ return new class extends Migration {
             $table->decimal('valor_contratual', 8, 2);
             $table->decimal('valor', 8, 2);
             $table->text('descricao')->nullable();
-            $table->enum('tipo_rede', TipoRede::values());
+            $table->enum('tipo_rede', TipoRede::values())->nullable();
             $table->boolean('entregue')->default(false);
-            $table->string('status')
-                ->nullable()
-                ->default(StatusPedido::ENVIAR_ENGENHEIRO->name);
+            $table->string('status')->default(StatusPedido::ENVIAR_ENGENHEIRO->name);
             $table->timestamps();
             $table->softDeletes();
         });
