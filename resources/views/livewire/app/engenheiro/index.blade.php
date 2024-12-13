@@ -23,14 +23,13 @@
                     <x-table.data-column>
                         <x-button icon="pencil" color="primary" wire:click="editModal('{{$eng->id}}')" />
                         <x-button class="ml-2" icon="trash"
-                           
+                            x-on:click="$wireui.confirmDialog({
+                            id:'excluir',
+                            method:'delete',
+                            params: {{$eng->id}}
+                            })"
                             color="negative"
-                            x-on:click="$wireui.dialog({
-                                title:'Tem certeza que deseja deletar este engenheiro?',
-                                description:'Essa ação não pode ser desfeita!',
-                                method:'delete',
-                                params: '{{$eng->id}}'
-                            })" />
+                            />
                     </x-table.data-column>
                 </x-table.data-row>
                 @empty
@@ -79,4 +78,5 @@
             <x-button label="Cancelar" x-on:click="close" />
         </x-slot>
     </x-modal.card>
+    <x-dialog id="excluir" title="Tem certeza que deseja exluir essse engeneiro?"></x-dialog>
 </div>
