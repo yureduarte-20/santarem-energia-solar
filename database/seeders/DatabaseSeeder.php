@@ -14,5 +14,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(MetodoPagamentoSeeder::class);
         $this->call(TipoDocumentoSeeder::class);
+        $this->call(PermissionSeeder::class);
     }
 }
