@@ -7,6 +7,7 @@ use App\Enums\TipoRede;
 use App\Models\Engenheiro;
 use App\Models\Pedido;
 use App\Models\TipoDocumento;
+use App\Services\WhatsappServiceInterface;
 use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Url;
@@ -18,6 +19,8 @@ class Edit extends Component
     use Actions;
     public Pedido $pedido;
     #[Url('cliente')]
+
+    protected WhatsappServiceInterface $whatsappService;
     public $cliente_id;
 
     public $user_id;
@@ -34,6 +37,10 @@ class Edit extends Component
     public $tipo_rede;
     public $descricao;
     public $rateios;
+    public function boot(WhatsappServiceInterface $whatsappService)
+    {
+        $this->whatsappService = $whatsappService;
+    }
     public function addRateio()
     {
         $this->rateios = $this->rateios ?? [];
@@ -57,6 +64,9 @@ class Edit extends Component
         $this->pedido->update(
             $this->all()
         );
+        $cliente = $this->pedido->cliente;
+        $result = $this->whatsappService->send('Novo pedido realizado n° '.$this->pedido->numero, $cliente->telefone);
+        dd($result, $cliente );
         if($this->engenheiros_homologacao){
             $this->pedido->homologacao_engenheiros()->sync(
                 $this->engenheiros_homologacao
@@ -103,7 +113,7 @@ class Edit extends Component
             if($this->pedido->homologacao_engenheiros()->doesntExist()){
                 $this->dialog()->error("O projeto não tem engenheiros");
             }
-            
+
             $this->pedido->update([
                 'status' => StatusPedido::ENVIADO_ENGENHEIRO
             ]);

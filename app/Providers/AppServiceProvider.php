@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
+use App\Services\WhatsappService;
+use App\Services\WhatsappServiceInterface;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Contracts\Foundation\Application;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -54,5 +57,8 @@ class AppServiceProvider extends ServiceProvider
         Validator::extend('cpf', function ($attribute, $value, $parameters, $validator) {
             return $this->valida_cpf($value);
         }, 'O campo :attribute não é um CPF válido.');
+        $this->app->bind(WhatsappServiceInterface::class, function (Application $app) {
+            return new WhatsappService();
+        });
     }
 }

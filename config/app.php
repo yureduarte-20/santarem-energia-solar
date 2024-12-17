@@ -44,6 +44,10 @@ return [
 
     'debug' => (bool) env('APP_DEBUG', false),
 
+    'ZAPP_INSTANCE' => env('ZAPP_INSTANCE', null),
+    'ZAPP_TOKEN' => env('ZAPP_TOKEN', null),
+    'ZAPP_VERIFICATION_CODE' => env('ZAPP_VERIFICATION_CODE', null),
+
     /*
     |--------------------------------------------------------------------------
     | Application URL

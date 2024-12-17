@@ -7,7 +7,7 @@ use App\Enums\TipoRede;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $numero
@@ -64,7 +64,7 @@ class Pedido extends Model
         'user_id',
         'qtde_contratado',
         'qtde_pedido',
-        'cliente_id', 
+        'cliente_id',
         'valor_contratual',
         'valor',
         'descricao',
@@ -92,7 +92,7 @@ class Pedido extends Model
     {
         return $this->hasMany(PedidoDocumento::class);
     }
-    public function homologacao_engenheiros() 
+    public function homologacao_engenheiros()
     {
         return $this->belongsToMany(Engenheiro::class, 'homologacao_engenheiros')
         ->withPivot(['data'])

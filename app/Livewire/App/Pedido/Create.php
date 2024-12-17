@@ -3,9 +3,11 @@
 namespace App\Livewire\App\Pedido;
 
 use App\Enums\TipoRede;
+use App\Models\Cliente;
 use App\Models\Engenheiro;
 use App\Models\Pedido;
 use App\Models\TipoDocumento;
+use App\Services\WhatsappServiceInterface;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Url;
 use Livewire\Attributes\Validate;
@@ -17,6 +19,7 @@ class Create extends Component
     use Actions;
     #[Url('cliente')]
     public $cliente_id;
+    protected WhatsappServiceInterface $whatsappService;
 
     public $user_id;
     public $documentos = [];
@@ -69,7 +72,10 @@ class Create extends Component
             'rateios.*.nome' => 'required|min:3'
         ];
     }
-
+    public function boot(WhatsappServiceInterface $whatsappService)
+    {
+        $this->whatsappService = $whatsappService;
+    }
     public function create()
     {
         $validated = $this->validate($this->getRules());
@@ -86,6 +92,7 @@ class Create extends Component
                     $pedido->rateios()->create($rateio);
                 }
             }
+
             $this->dialog([
                 'icon' => 'success',
                 'title' => __('Created.'),

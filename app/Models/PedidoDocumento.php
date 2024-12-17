@@ -35,7 +35,7 @@ use Illuminate\Database\Query\Builder;
  */
 class PedidoDocumento extends Model implements Arquivable
 {
-    protected $fillable =['pedido_id', 'tipo_documento_id', 'entregue'];
+    protected $fillable =['pedido_id', 'tipo_documento_id', 'entregue', 'enviar_homologacao'];
 
     public function pedido()
     {
