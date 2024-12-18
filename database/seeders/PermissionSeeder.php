@@ -38,11 +38,11 @@ class PermissionSeeder extends Seeder
             'show-docs',
             'despachar-docs',
 
-            'create-engenheiro',
-            'edit-engenheiro',
-            'view-engenheiro',
-            'show-engenheiro',
-            'delete-engenheiro',
+            'create-engenheiros',
+            'edit-engenheiros',
+            'view-engenheiros',
+            'show-engenheiros',
+            'delete-engenheiros',
 
             'show-valores',
 
@@ -70,6 +70,10 @@ class PermissionSeeder extends Seeder
             'create-docs',
             'show-clientes',
             'view-clientes',
+            'view-docs',
+            'show-docs',
+            'view-pedidos',
+            'show-pedidos',
         ]);;
         Role::findByName(TipoConta::VENDEDOR->name)->givePermissionTo([
             'show-clientes',

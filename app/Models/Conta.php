@@ -5,20 +5,22 @@ namespace App\Models;
 use App\Enums\TipoConta;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Conta extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'type',
+        'tipo',
         'user_id'
     ];
     protected $casts = [
-        'type' => TipoConta::class
+        'tipo' => TipoConta::class
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+    
 }

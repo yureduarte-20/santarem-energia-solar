@@ -3,6 +3,7 @@
 namespace App\Livewire\Forms;
 
 use App\Actions\Fortify\CreateNewUser;
+use App\Enums\TipoConta;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
@@ -13,6 +14,7 @@ class CreateNewUserForm extends AbstractForm
     public $name;
     public $password;
     public $email;
+    public $tipo;
     public function save() : mixed
     {
         $this->verify();
@@ -28,7 +30,8 @@ class CreateNewUserForm extends AbstractForm
         return [
             'name' => 'required|min:3',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:8'
+            'password' => 'required|min:8',
+            'tipo' => 'required|in:'.collect(TipoConta::cases_names())->join(',')
         ];
     }
 

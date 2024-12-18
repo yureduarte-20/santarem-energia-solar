@@ -5,6 +5,7 @@ namespace App\Livewire\App\Engenheiro;
 use App\Livewire\Forms\CreateEngenheiroForm;
 use App\Livewire\Forms\UpdateEngenheiroForm;
 use App\Models\Engenheiro;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
@@ -19,6 +20,7 @@ class Index extends Component
     public $updateModal = false;
     public function create()
     {
+        $this->authorize('create',  Engenheiro::class);
         $this->formCreate->verify();
         $this->formCreate->save();
         $this->createModal = false;
@@ -27,12 +29,12 @@ class Index extends Component
     public function editModal($id)
     {
         $eng = Engenheiro::where('id',$id)->firstOrFail();
-        $this->formUpdate->eng = $eng;
-        $this->formUpdate->fill($eng->toArray());
+        $this->formUpdate->fillFromEngenheiro($eng);
         $this->updateModal = true;
     }   
     public function edit()
     {
+        $this->authorize( 'update', $this->formUpdate->eng);
         $this->formUpdate->save();
         $this->formUpdate->reset();
         $this->updateModal = false;
@@ -41,6 +43,8 @@ class Index extends Component
     public function delete($id)
     {
         $engenheiro = Engenheiro::where(['id' => $id])->firstOrFail();
+        $this->authorize('delete', $engenheiro);
+        
         if($engenheiro->whereHas('pedidos')->exists()){
             $this->notification()->error(
                 'Não foi possível apagar',
@@ -48,14 +52,20 @@ class Index extends Component
             );
             return;
         }
-        $engenheiro->delete();
+        DB::transaction(function ()use($engenheiro){
+            $engenheiro->conta->user->delete();
+            $engenheiro->conta->delete();
+            $engenheiro->delete();
+            $this->notification()->success('Deletado com sucesso!');
+        });
     }
     public function render()
     {
         return view('livewire.app.engenheiro.index', [
             'engs' => Engenheiro::
                 when($this->query, fn($query) => $query->where('nome', 'like', $this->query))
-                ->paginate(10)
+                ->paginate(10),
+                'componentId' => $this->getId()
         ]);
     }
 }

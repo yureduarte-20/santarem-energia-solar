@@ -9,9 +9,11 @@ use Livewire\Form;
 
 class CreateEngenheiroForm extends AbstractForm
 {
-    public $nome;
+    public $name;
     public $cpf;
+    public $password;
 
+    public $email;
     public function getRules() : array
     {
         return (new CreateEngenheiroAction)->getRules();

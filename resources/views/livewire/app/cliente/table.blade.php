@@ -3,7 +3,9 @@
         <div class="mb-2">
             <x-input wire:model.live.debounce="query" icon="search" label="Pesquisar" />
         </div>
+        @can('create-clientes')
         <x-button color="primary" x-on:click="Livewire.navigate('{{ route('cliente.create') }}')" label="Criar" />
+        @endcan
     </section>
 
     <x-table.data-table>
@@ -22,7 +24,9 @@
                         {{ $eng->cpf }}
                     </x-table.data-column>
                     <x-table.data-column>
-                        <x-button color="secondary" icon="pencil" x-on:click="Livewire.navigate('{{route('cliente.edit', $eng)}}')" />
+                        @can('edit-clientes')
+                            <x-button color="secondary" icon="pencil" x-on:click="Livewire.navigate('{{route('cliente.edit', $eng)}}')" />
+                        @endcan
                     </x-table.data-column>
                 </x-table.data-row>
                 @empty

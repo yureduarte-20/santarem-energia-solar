@@ -21,6 +21,7 @@ class Edit extends Component
     }
     public function submit()
     {
+        $this->authorize('update',$this->cliente);
         $this->form->verify();
         $result = $this->form->save();
         $result and $this->notification()->success("Atualizado com sucesso");

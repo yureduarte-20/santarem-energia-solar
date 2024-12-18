@@ -9,7 +9,7 @@ enum TipoConta {
     public function label()
     {
         return match($this){
-            TipoConta::ENGENHEIRO => 'Engenheiros',
+            TipoConta::ENGENHEIRO => 'Engenheiro',
             TipoConta::ADMIN => 'Administrador',
             TipoConta::VENDEDOR => 'Vendedor',
             TipoConta::INSTALADOR => 'Instalador'

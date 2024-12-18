@@ -25,7 +25,7 @@ class CreateNewUser implements CreatesNewUsers
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'type' => 'required|in:'.join(',', TipoConta::cases_names()),
+            'tipo' => 'required|in:'.join(',', TipoConta::cases_names()),
             'password' => $this->passwordRules(),
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
         ])->validate();
@@ -38,9 +38,9 @@ class CreateNewUser implements CreatesNewUsers
             $action = new NotifyNewUserAction;
             Conta::create([
                 'user_id' => $user->id,
-                'type' => $input['type']
+                'tipo' => $input['tipo']
             ]);
-            $user->assignRole($input['type']);
+            $user->assignRole($input['tipo']);
             $action($user->email, $input['password']);
         });
     }

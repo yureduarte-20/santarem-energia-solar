@@ -47,6 +47,7 @@
                             <span :class="{ 'lg:hidden': !isSidebarOpen }">{{ __('Dashboard') }}</span>
                         </a>
                     </li>
+                    @can('view-clientes')
                     <li>
                         <a href="{{ route('cliente.index') }}"
                            wire:navigate
@@ -58,6 +59,8 @@
                             <span :class="{ 'lg:hidden': !isSidebarOpen }">{{ __('Customers') }}</span>
                         </a>
                     </li>
+                    @endcan
+                    @can('view-engenheiros')
                     <li>
                         <a href="{{ route('engenheiro.index') }}"
                                        wire:navigate
@@ -69,6 +72,8 @@
                             <span :class="{ 'lg:hidden': !isSidebarOpen }">{{ __('Engineers') }}</span>
                         </a>
                     </li>
+                    @endcan
+                    @can('view-pedidos')
                     <li>
                         <a href="{{ route('pedido.index') }}"
                            wire:navigate
@@ -80,6 +85,8 @@
                             <span :class="{ 'lg:hidden': !isSidebarOpen }">{{ __('Orders') }}</span>
                         </a>
                     </li>
+                    @endcan
+                    @can('view-users')
                     <li>
                         <a href="{{ route('user.index') }}"
                            wire:navigate
@@ -91,7 +98,7 @@
                             <span :class="{ 'lg:hidden': !isSidebarOpen }">{{ __('Users') }}</span>
                         </a>
                     </li>
-                    
+                    @endcan
                 </ul>
             </nav>
 

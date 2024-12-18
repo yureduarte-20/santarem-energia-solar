@@ -51,7 +51,9 @@
             </div>
         </div>
         <div>
-            <x-button label="Salvar" type="submit" color="primary" />
+            @can('edit-clientes')
+                <x-button label="Salvar" type="submit" color="primary" />
+            @endcan
         </div>
     </form>
 </div>

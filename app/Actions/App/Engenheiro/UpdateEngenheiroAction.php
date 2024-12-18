@@ -11,13 +11,16 @@ class UpdateEngenheiroAction
     {
         $valitador = Validator::make($input,$this->getRules($eng));
         $validated = $errorBag ? $valitador->validateWithBag($errorBag) : $valitador->validate();
-        return $eng->update($validated);
+        $result = $eng->update($validated);
+        $result and $result = $eng->conta->user->update($validated);
+        return $result;
     }
     public function getRules(Engenheiro $eng)
     {
         return [
             'cpf' => ['required','cpf', Rule::unique('engenheiros', 'cpf')->ignore($eng->id)],
-            'nome' => 'required|string|min:3|max:255'
+            'name' => 'required|string|min:3|max:255',
+            'email' => ['required', 'email', Rule::unique('users')->ignore($eng->conta->user_id)]
         ];
     }
 }

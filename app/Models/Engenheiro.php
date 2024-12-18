@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
  * 
  *
  * @property int $id
- * @property string $nome
  * @property string $cpf
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -28,12 +27,16 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Engenheiro extends Model
 {
-    protected $fillable = ['nome', 'cpf'];
+    protected $fillable = [ 'cpf', 'conta_id'];
 
     public function pedidos() 
     {
         return $this->belongsToMany(Pedido::class, 'homologacao_engenheiros')
         ->withPivot(['data'])
         ->withTimestamps();
+    }
+    public function conta()
+    {
+        return $this->belongsTo(Conta::class);
     }
 }
