@@ -12,8 +12,10 @@
                 <x-table.header-column>Engenheiro</x-table.header-column>
                 <x-table.header-column>Cidade</x-table.header-column>
                 <x-table.header-column>Previsão de Entrega</x-table.header-column>
-                <x-table.header-column>Valor Projeto Final</x-table.header-column>
-                <x-table.header-column>Valor do KIT</x-table.header-column>
+                @can('show-valores')
+                    <x-table.header-column>Valor Projeto Final</x-table.header-column>
+                    <x-table.header-column>Valor do KIT</x-table.header-column>
+                @endcan
                 <x-table.header-column>Tipo de Rede</x-table.header-column>
                 <x-table.header-column></x-table.header-column>
             </x-slot>
@@ -36,9 +38,10 @@
                         <x-table.data-column>{{$p->homologacao_engenheiros?->map?->nome->whenEmpty(fn () => collect('Não informado'))->join(',', ' e ') }}</x-table.data-column>
                         <x-table.data-column>{{$p->cliente->endereco->cidade}}</x-table.data-column>
                         <x-table.data-column>{{$p->previsao_entrega->format('d/m/Y')}}</x-table.data-column>
-                        <x-table.data-column>
-                            R$ {{number_format($p->valor_contratual, 2, ',','.')}}</x-table.data-column>
-                        <x-table.data-column>R$ {{number_format($p->valor, 2, ',','.')}}</x-table.data-column>
+                        @can('show-valores')
+                            <x-table.data-column>R$ {{number_format($p->valor_contratual, 2, ',','.')}}</x-table.data-column>
+                            <x-table.data-column>R$ {{number_format($p->valor, 2, ',','.')}}</x-table.data-column>
+                        @endcan
                         <x-table.data-column>
                             <x-tipo-rede tipoRede="{{$p->tipo_rede->name}}" />
                         </x-table.data-column>

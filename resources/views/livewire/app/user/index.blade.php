@@ -1,8 +1,9 @@
 <div>
     <section class="mb-2">
-        <x-button x-on:click="$wire.$set('modalCreate', true)"
-        color="primary"
-        label="Cadastrar Novo Usuário" icon="plus" />
+        @can('create-user')
+            <x-button x-on:click="$wire.$set('modalCreate', true)" color="primary" label="Cadastrar Novo Usuário"
+                icon="plus" />
+        @endcan
     </section>
     <x-table.data-table>
         <x-slot name="headerColumns">
@@ -28,16 +29,21 @@
             <x-input label="Nome" wire:model='createForm.name' />
             <x-input label="Email" type="email" wire:model='createForm.email' />
             <x-input label="Senha" wire:model='createForm.password' />
-            <x-native-select label="Papel no sistema" wire:model='createForm.tipo' >
+            <x-native-select label="Papel no sistema" wire:model='createForm.tipo'>
                 <option valur>Selecione um papel</option>
-                <option value="{{App\Enums\TipoConta::ADMIN->name}}">{{\App\Enums\TipoConta::ADMIN->label()}}</option>
-                <option value="{{App\Enums\TipoConta::INSTALADOR->name}}">{{\App\Enums\TipoConta::INSTALADOR->label()}}</option>
-                <option value="{{App\Enums\TipoConta::VENDEDOR->name}}">{{\App\Enums\TipoConta::VENDEDOR->label()}}</option>
+                <option value="{{ App\Enums\TipoConta::ADMIN->name }}">{{ \App\Enums\TipoConta::ADMIN->label() }}
+                </option>
+                <option value="{{ App\Enums\TipoConta::INSTALADOR->name }}">
+                    {{ \App\Enums\TipoConta::INSTALADOR->label() }}</option>
+                <option value="{{ App\Enums\TipoConta::VENDEDOR->name }}">{{ \App\Enums\TipoConta::VENDEDOR->label() }}
+                </option>
             </x-native-select>
 
         </div>
         <x-slot name="footer">
-            <x-button color="primary" label="Enviar" wire:click='create' />
+            @can('create-user')
+                <x-button color="primary" label="Enviar" wire:click='create' />
+            @endcan
             <x-button label="Cancelar" x-on:click="close" />
         </x-slot>
     </x-modal.card>

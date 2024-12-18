@@ -3,28 +3,41 @@
         <x-slot name="headerColumns">
             <x-table.header-column>Tipo de Documento</x-table.header-column>
             <x-table.header-column>Arquivo</x-table.header-column>
+            <x-table.header-column>Anexou</x-table.header-column>
             <x-table.header-column>
-                <x-button icon="plus" color="primary"
-                   x-on:click="$wire.$set('modalDocumento', true)" />
+                <x-button icon="plus" color="primary" x-on:click="$wire.$set('modalDocumento', true)" />
             </x-table.header-column>
         </x-slot>
         <x-slot name="dataRows">
-            @foreach ($pedido->pedido_documentos as $docs)
+            @foreach ($documentos as $doc)
                 <x-table.data-row>
                     <x-table.data-column>
-                        {{ $docs->tipo_documento->nome }}
+                        {{ $doc->tipo_documento->nome }}
                     </x-table.data-column>
                     <x-table.data-column>
-                        {{ $docs->arquivo?->nome ?? '-' }}
+                        {{ $doc->arquivo?->nome ?? '-' }}
                     </x-table.data-column>
                     <x-table.data-column>
-                        @if ($docs->arquivo()->doesntExist())
-                            <x-button label="upload" icon="upload" color="primary"
-                                x-on:click="$wire.$set('modalUpload', {{ $docs->id }})" />
+                        {{ $doc->user->name }} - {{ $doc->user->conta->tipo->label() }}
+                    </x-table.data-column>
+                    <x-table.data-column wire:key="doc_{{ $doc->id }}">
+                        @if ($doc->arquivo()->doesntExist())
+                            @can('create-docs')
+                                <x-button label="upload" icon="upload" color="primary"
+                                    x-on:click="$wire.$set('modalUpload', {{ $doc->id }})" />
+                            @endcan
                         @else
-                            <x-button icon="download" color="primary" wire:click="download({{ $docs->id }})" />
+                            @can('show-docs')
+                                <x-button icon="download" color="primary" wire:click="download({{ $doc->id }})" />
+                            @endcan
                         @endif
-
+                        @can('edit-docs')
+                            <div class="ml-2">
+                                <x-toggle wire:model='docs.{{ $doc->id }}.enviar_homologacao'
+                                    x-on:click="$wire.$call('edit',  '{{ $doc->id }}')"
+                                    label="Visível para o engenheiro" />
+                            </div>
+                        @endcan
                     </x-table.data-column>
                 </x-table.data-row>
             @endforeach
@@ -70,7 +83,7 @@
             }
         }">
             <x-select :async-data="route('tipo-documento.search')" wire:model="tipoDocumento" label="Tipo de Documento" option-value="id"
-                option-label="nome" >
+                option-label="nome">
                 <x-slot name="afterOptions" class="p-2 flex justify-center" x-show="displayOptions.length === 0">
                     <x-button x-on:click="createTipoDocumento(search)" primary flat full>
                         <span x-html="`Criar <b>${search}</b>`"></span>

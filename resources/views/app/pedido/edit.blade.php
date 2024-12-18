@@ -4,7 +4,9 @@
             <livewire:app.pedido.edit :pedido="$pedido" />
         </div>
         <div>
-            <livewire:app.pedido.documento :pedido="$pedido" />
+            @can('view-docs')
+                <livewire:app.pedido.documento :pedido="$pedido" />
+            @endcan
         </div>
     </x-general.dashboard>
 </x-app-layout>

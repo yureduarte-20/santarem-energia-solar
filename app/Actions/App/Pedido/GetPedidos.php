@@ -13,12 +13,12 @@ class GetPedidos
         $user = Auth::user();
         $conta = Auth::user()->conta;
 
-        return match ($conta->type) {
+        return match ($conta->tipo) {
             TipoConta::ADMIN, TipoConta::INSTALADOR  => Pedido::query(),
             TipoConta::VENDEDOR => Pedido::query()->where('user_id', $user->id),
             TipoConta::ENGENHEIRO => Pedido::query()->whereHas(
                 'homologacao_engenheiros',
-                fn($query) => $query->where('homologacao_engenheiros.engenheiro_id', $user->id)
+                fn($query) => $query->where('homologacao_engenheiros.engenheiro_id', $conta->engenheiro->id)
             ),
         };
     }

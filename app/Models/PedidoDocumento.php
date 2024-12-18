@@ -35,7 +35,7 @@ use Illuminate\Database\Query\Builder;
  */
 class PedidoDocumento extends Model implements Arquivable
 {
-    protected $fillable =['pedido_id', 'tipo_documento_id', 'entregue', 'enviar_homologacao'];
+    protected $fillable =['pedido_id', 'tipo_documento_id', 'entregue', 'enviar_homologacao', 'user_id'];
 
     public function pedido()
     {
@@ -59,5 +59,9 @@ class PedidoDocumento extends Model implements Arquivable
     public function getRelationshipBuilder(): MorphOne|MorphMany
     {
         return $this->arquivo();
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

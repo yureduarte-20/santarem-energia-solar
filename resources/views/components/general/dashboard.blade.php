@@ -86,7 +86,7 @@
                         </a>
                     </li>
                     @endcan
-                    @can('view-users')
+                    @can('view-user')
                     <li>
                         <a href="{{ route('user.index') }}"
                            wire:navigate

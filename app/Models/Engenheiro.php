@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -28,6 +29,9 @@ use Illuminate\Database\Eloquent\Model;
 class Engenheiro extends Model
 {
     protected $fillable = [ 'cpf', 'conta_id'];
+    protected $appends =[
+        'nome'
+    ];
 
     public function pedidos() 
     {
@@ -38,5 +42,9 @@ class Engenheiro extends Model
     public function conta()
     {
         return $this->belongsTo(Conta::class);
+    }
+    public function nome() : Attribute
+    {
+        return Attribute::make(get: fn(mixed $value) => $this->conta()->first()->user->name );
     }
 }

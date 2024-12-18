@@ -7,8 +7,10 @@ use App\Models\Cliente;
 use App\Models\Engenheiro;
 use App\Models\Pedido;
 use App\Models\TipoDocumento;
+use App\Models\User;
 use App\Services\WhatsappServiceInterface;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\Url;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -38,6 +40,11 @@ class Create extends Component
     public function mount()
     {
         $this->user_id = auth()->user()->id;
+    }
+    #[Computed(persist: true)]
+    public function user()
+    {
+        return User::find($this->user_id);
     }
 
     public function addRateio()
@@ -78,13 +85,14 @@ class Create extends Component
     }
     public function create()
     {
+        $this->authorize('create', Pedido::class);
         $validated = $this->validate($this->getRules());
         DB::transaction(function () use ($validated) {
             $pedido = Pedido::create($validated);
             $validated['engenheiros_homologacao'] and $pedido->homologacao_engenheiros()->attach($validated['engenheiros_homologacao']);
             foreach($validated['documentos'] as $doc_id)
             {
-                $pedido->pedido_documentos()->create(['tipo_documento_id' => $doc_id]);
+                $pedido->pedido_documentos()->create(['tipo_documento_id' => $doc_id, 'user_id' => $this->user()->id ]);
             }
             $rateios = $validated['rateios'];
             if($rateios){
@@ -112,7 +120,7 @@ class Create extends Component
     public function render()
     {
         return view('livewire.app.pedido.create', [
-            'engenheiros' => Engenheiro::get(['id', 'nome']),
+            'engenheiros' => Engenheiro::with('conta.user')->get(),
             'documentos_disp' => TipoDocumento::get(['id','nome'])
         ]);
     }
