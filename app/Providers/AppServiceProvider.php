@@ -7,7 +7,7 @@ use App\Services\WhatsappServiceInterface;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Contracts\Foundation\Application;
-
+use Illuminate\Support\Str;
 class AppServiceProvider extends ServiceProvider
 {
     private function valida_cpf($cpf): bool
@@ -60,5 +60,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(WhatsappServiceInterface::class, function (Application $app) {
             return new WhatsappService();
         });
+        Str::macro('concat', function(string $str1, string $str2) : string {
+            return $str1 . $str2;
+        });
+        
     }
 }

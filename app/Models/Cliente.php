@@ -41,4 +41,8 @@ class Cliente extends Model
     {
         return $this->morphOne(Endereco::class, 'addressable');
     }
+    public function pedidos()
+    {
+        return $this->hasMany(Pedido::class);
+    }
 }
