@@ -58,6 +58,8 @@ class PermissionSeeder extends Seeder
             'delete-clientes',
             'create-clientes',
 
+            'homologar'
+
         ];
         collect($permissions)
             ->each(
@@ -73,6 +75,7 @@ class PermissionSeeder extends Seeder
             'view-docs',
             'show-docs',
             'view-pedidos',
+            'homologar',
             'show-pedidos',
         ]);;
         Role::findByName(TipoConta::VENDEDOR->name)->givePermissionTo([

@@ -24,6 +24,11 @@
                         {{ $eng->cpf }}
                     </x-table.data-column>
                     <x-table.data-column>
+                        @can('show-pedidos')
+                            @if($eng->pedidos()->latest()->first())
+                                <x-button href="{{route('pedido.edit', $eng->pedidos()->latest()->first() )}}" label="Pedido" color="primary" />
+                            @endif
+                        @endcan
                         @can('edit-clientes')
                             <x-button color="secondary" icon="pencil" x-on:click="Livewire.navigate('{{route('cliente.edit', $eng)}}')" />
                         @endcan

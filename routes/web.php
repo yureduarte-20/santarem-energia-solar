@@ -34,6 +34,7 @@ Route::middleware([
 
         });
     Route::post('documentos/{pedidoDocumento}', [\App\Http\Controllers\DocumentosUploadController::class, 'store'])->name('documento.store');
+    Route::post('documentos/{pedido}/pedido', [\App\Http\Controllers\DocumentosUploadController::class, 'storeFromPedido'])->name('documento.store-pedido');
     Route::name('pedido.')
         ->prefix('pedido')
         ->controller(PedidoController::class)

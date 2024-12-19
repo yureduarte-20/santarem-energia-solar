@@ -50,8 +50,8 @@
 
             </x-native-select>
         </div>
-        @can('edit-pedidos')
-            <div class="pt-5">
+        <div class="pt-5">
+            @can('edit-pedidos')
                 @switch($pedido->status)
                     @case(\App\Enums\StatusPedido::ENVIAR_ENGENHEIRO)
                         <x-button color="primary" wire:ignore
@@ -65,7 +65,7 @@
                             label="Declarar que enviou para engenherio" />
                     @break
 
-                    @case(\App\Enums\StatusPedido::ENVIADO_ENGENHEIRO)
+                    @case(\App\Enums\StatusPedido::HOMOLOGADO)
                         <x-button label="Finalizar o projeto" wire:ignore color="primary"
                             x-on:click="$wireui.confirmDialog({
                         id:'encerrar',
@@ -78,8 +78,20 @@
 
                     @default
                 @endswitch
-            </div>
-        @endcan
+            @endcan
+            @can('homologar')
+                @switch($pedido->status)
+                    @case(\App\Enums\StatusPedido::ENVIADO_ENGENHEIRO)
+                        <x-button label="Homologar o projeto" wire:ignore color="primary"
+                            x-on:click="$wireui.confirmDialog({
+                                title:'Deseja declarar com que homologou?',
+                                description:'Deseja declarar que homologou o projeto?',
+                                method:'homologar'
+                            }, '{{ $componentId }}')" />
+                    @break
+                @endswitch
+            @endcan
+        </div>
         <div class="lg:col-span-3">
             <x-textarea label="Observações" wire:model='descricao'></x-textarea>
         </div>

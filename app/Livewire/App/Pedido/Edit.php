@@ -81,6 +81,14 @@ class Edit extends Component
         }
         $this->notification()->success("Atualizado com sucesso!");
     }
+    public function homologar()
+    {
+        if($this->pedido->status == StatusPedido::ENVIADO_ENGENHEIRO){
+            $this->pedido->status = StatusPedido::HOMOLOGADO;
+            $status = $this->pedido->save();
+            $status and $this->notification()->success("Atualizado com sucesso");
+        }
+    }
 
     public function getRules()
     {
