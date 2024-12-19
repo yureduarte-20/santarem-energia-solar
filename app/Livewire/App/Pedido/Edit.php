@@ -119,6 +119,7 @@ class Edit extends Component
             $this->pedido->homologacao_engenheiros->each(function(Engenheiro $engenheiro){
                 $engenheiro->conta->user->notifyNow(new NewProjectNotification($this->pedido));
             });
+            $this->dialog()->success("Projeto enviado para a homologação.");
         } else if(StatusPedido::FINALIZADO->name == $status and $this->pedido->status == StatusPedido::ENVIADO_ENGENHEIRO){
             [ 'data_entrega' => $data_entrega ] = $this->validate([
                 'data_entrega' => 'date'
@@ -130,6 +131,7 @@ class Edit extends Component
             ]);
             $this->dialog()->success("Projeto Finalizado");
         }
+        $this->dispatch('pedido-updated');
     }
     public function render()
     {

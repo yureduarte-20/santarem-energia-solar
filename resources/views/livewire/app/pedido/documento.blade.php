@@ -1,4 +1,4 @@
-<div class="">
+<div class="" x-on:pedido-updated.window="$wire.$refresh()">
     <x-table.data-table>
         <x-slot name="headerColumns">
             <x-table.header-column>Tipo de Documento</x-table.header-column>
@@ -33,9 +33,11 @@
                         @endif
                         @can('edit-docs')
                             <div class="ml-2">
-                                <x-toggle wire:model='docs.{{ $doc->id }}.enviar_homologacao'
-                                    x-on:click="$wire.$call('edit',  '{{ $doc->id }}')"
-                                    label="Visível para o engenheiro" />
+                                @if ($doc->user_id == auth()->user()->id)
+                                    <x-toggle wire:model='docs.{{ $doc->id }}.enviar_homologacao'
+                                        x-on:click="$wire.$call('edit',  '{{ $doc->id }}')"
+                                        label="Visível para o engenheiro" />
+                                @endif
                             </div>
                         @endcan
                     </x-table.data-column>

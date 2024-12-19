@@ -20,8 +20,10 @@ class GetDocumento
             ),
             TipoConta::ENGENHEIRO => PedidoDocumento::query()
                 ->when($pedido, fn($q) => $q->where('pedido_id', $pedido->id))
-                ->where('enviar_homologacao', true)
-                ->whereHas('pedido.homologacao_engenheiros', fn($query) => $query->where('homologacao_engenheiros.engenheiro_id', $conta->engenheiro->id)),
+                ->where('user_id', $user->id)
+                ->orWhere(fn($query) => $query->where('enviar_homologacao', true)
+                    ->whereHas('pedido.homologacao_engenheiros', fn($query) => $query->where('homologacao_engenheiros.engenheiro_id', $conta->engenheiro->id)), )
+
         };
     }
 }
