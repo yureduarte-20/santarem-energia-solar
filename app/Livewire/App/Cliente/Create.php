@@ -18,7 +18,7 @@ class Create extends Component
     public CreateClienteForm $form;
     public function updatedForm()
     {
-        $this->authorize('update', Pedido::class);
+
         $this->form->update();
     }
     public function submit()
