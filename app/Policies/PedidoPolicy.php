@@ -63,4 +63,8 @@ class PedidoPolicy
     {
         return $user->hasPermissionTo('delete-pedidos');
     }
+    public function homologar(User $user, Pedido $pedido)
+    {
+        return $user->hasPermissionTo('homologar');
+    }
 }

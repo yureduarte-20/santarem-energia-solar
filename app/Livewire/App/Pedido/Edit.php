@@ -10,6 +10,7 @@ use App\Models\TipoDocumento;
 use App\Notifications\NewProjectNotification;
 use App\Services\WhatsappServiceInterface;
 use Carbon\Carbon;
+use Gate;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -83,6 +84,10 @@ class Edit extends Component
     }
     public function homologar()
     {
+        $result = Gate::inspect('homologar', $this->pedido);
+        if($result->denied()){
+            return $this->notification()->error('Não autorizado', 'Você não tem autorização para homologar este projeto') ;
+        }
         if($this->pedido->status == StatusPedido::ENVIADO_ENGENHEIRO){
             $this->pedido->status = StatusPedido::HOMOLOGADO;
             $status = $this->pedido->save();
