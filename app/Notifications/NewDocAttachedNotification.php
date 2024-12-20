@@ -2,12 +2,13 @@
 
 namespace App\Notifications;
 
+use App\Models\PedidoDocumento;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class NewUserNotification extends Notification
+class NewDocAttachedNotification extends Notification
 {
     use Queueable;
 
@@ -15,10 +16,11 @@ class NewUserNotification extends Notification
      * Create a new notification instance.
      */
     public function __construct(
-        protected $email,
-        protected $password,
+        private PedidoDocumento $pedidoDocumento
     )
-    {}
+    {
+        //
+    }
 
     /**
      * Get the notification's delivery channels.
@@ -35,13 +37,12 @@ class NewUserNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
+
         return (new MailMessage)
-                    ->subject("Sua conta foi criada!")
-                    ->line('Nova conta criada')
-                    ->line("Login: {$this->email}")
-                    ->line("Senha: {$this->password}")
-                    ->action('Acessar o Sistema', url()->route('login'))
-                    ->line('Atensiosamente, Santarem Energia Solar');
+                    ->subject('Novo documento anexado')
+                    ->line('Um novo documento foi adicionado a um projeto que você está acompanhando.')
+                    ->action('Acessar', url()->route('pedido.edit', $this->pedidoDocumento->pedido_id))
+                    ->salutation('Atenciosamente, '.env('APP_NAME').'.');
     }
 
     /**

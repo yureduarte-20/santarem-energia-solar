@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Enums\TipoConta;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -65,5 +67,13 @@ class User extends Authenticatable
     public function conta()
     {
         return $this->hasOne(Conta::class);
+    }
+    public function instalacoes()
+    {
+        return $this->belongsToMany(Pedido::class, 'instaladores_pedidos')->withTimestamps();
+    }
+    public function scopeInstaladores()
+    {
+        return $this->whereHas('conta', fn($q) => $q->where('contas.tipo', TipoConta::INSTALADOR->name) );
     }
 }

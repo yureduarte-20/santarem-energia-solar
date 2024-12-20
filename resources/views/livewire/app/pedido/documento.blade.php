@@ -87,6 +87,7 @@
                 }
             }">
                 <x-input label="Anexe o arquivo" name="arquivo" type="file" />
+                
                 <x-select :async-data="route('tipo-documento.search')" x-model.defer="tipoDocumento" label="Tipo de Documento"
                     option-value="id" option-label="nome" name="tipo_documento_id" >
                     <x-slot name="afterOptions" class="p-2 flex justify-center" x-show="displayOptions.length === 0">
@@ -95,7 +96,9 @@
                         </x-button>
                     </x-slot>
                 </x-select>
-                <span x-text="tipoDocumento"></span>
+                <div class="mt-2">
+                    <x-toggle name="enviar_homologacao" label="Visível para o engenheiro" />
+                </div>
             </div>
             <x-slot name="footer">
                 <x-button color="primary" label="Adicionar" type="submit" />

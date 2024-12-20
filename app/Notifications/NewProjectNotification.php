@@ -38,6 +38,7 @@ class NewProjectNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
+                    ->subject("Novo projeto adicionado")
                     ->line("Olá {$notifiable->name}.")
                     ->line('Um novo projeto foi criado para homologação')
                     ->action('Acessar', url()->route('pedido.edit', $this->pedido));

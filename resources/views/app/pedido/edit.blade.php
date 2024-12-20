@@ -1,5 +1,6 @@
 <x-app-layout>
     <x-general.dashboard>
+        <x-errors />
         @can('show-clientes')
         <div class="mb-2">
             <h2>Clientes</h2>

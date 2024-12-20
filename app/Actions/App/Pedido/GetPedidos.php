@@ -14,7 +14,11 @@ class GetPedidos
         $conta = Auth::user()->conta;
 
         return match ($conta->tipo) {
-            TipoConta::ADMIN, TipoConta::INSTALADOR  => Pedido::query(),
+            TipoConta::ADMIN => Pedido::query(),
+            TipoConta::INSTALADOR => Pedido::query()->whereHas(
+                'instaladores',
+                fn($q) => $q->where('instaladores_pedidos.user_id', $user->id)
+            ),
             TipoConta::VENDEDOR => Pedido::query()->where('user_id', $user->id),
             TipoConta::ENGENHEIRO => Pedido::query()->whereHas(
                 'homologacao_engenheiros',

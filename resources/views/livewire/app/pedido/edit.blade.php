@@ -50,11 +50,17 @@
 
             </x-native-select>
         </div>
+        <div>
+            <x-select  label="Instaladores" 
+            wire:model='instaladores'
+            multiselect
+            option-label="name" option-value="id" :options="$options_instaladores" />
+        </div>
         <div class="pt-5">
             @can('edit-pedidos')
                 @switch($pedido->status)
                     @case(\App\Enums\StatusPedido::ENVIAR_ENGENHEIRO)
-                        <x-button color="primary" wire:ignore
+                        <x-button color="warning" wire:ignore
                             x-on:click="$wireui.confirmDialog({
 
                         'title':'Deseja declarar a homologação para engenheiro?',
@@ -66,7 +72,7 @@
                     @break
 
                     @case(\App\Enums\StatusPedido::HOMOLOGADO)
-                        <x-button label="Finalizar o projeto" wire:ignore color="primary"
+                        <x-button label="Finalizar o projeto" wire:ignore color="warning"
                             x-on:click="$wireui.confirmDialog({
                         id:'encerrar',
                         'title':'Deseja declarar com entregue?',
@@ -82,7 +88,7 @@
             @can('homologar')
                 @switch($pedido->status)
                     @case(\App\Enums\StatusPedido::ENVIADO_ENGENHEIRO)
-                        <x-button label="Homologar o projeto" wire:ignore color="primary"
+                        <x-button label="Homologar o projeto" wire:ignore color="warning"
                             x-on:click="$wireui.confirmDialog({
                                 title:'Deseja declarar com que homologou?',
                                 description:'Deseja declarar que homologou o projeto?',
@@ -92,6 +98,7 @@
                 @endswitch
             @endcan
         </div>
+        
         <div class="lg:col-span-3">
             <x-textarea label="Observações" wire:model='descricao'></x-textarea>
         </div>
@@ -119,10 +126,11 @@
             @endif
             <hr class="mt-3" />
         </div>
+        
     </div>
     <div class="mt-2">
-        @can('edit-pedido')
-            <x-button label="Salvar" wire:click="save" color="primary" icon="save" />
+        @can('edit-pedidos')
+            <x-button label="Salvar alterações no pedido" wire:click="save" color="primary" icon="save" />
         @endcan
     </div>
 

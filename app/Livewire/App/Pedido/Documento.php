@@ -31,7 +31,7 @@ class Documento extends Component
     public function edit($id)
     {
         $result = PedidoDocumento::find($id)->update($this->docs[$id]);
-        $result and $this->notification()->success("Arquivo visível para engenheiro");
+        $result and $this->notification()->success("Visibilidade do arquivo atualizada.");
     }
     public function addDocumento()
     {
