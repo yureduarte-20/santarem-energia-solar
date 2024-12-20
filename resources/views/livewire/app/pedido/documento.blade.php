@@ -96,9 +96,11 @@
                         </x-button>
                     </x-slot>
                 </x-select>
+                @can('edit-docs')
                 <div class="mt-2">
                     <x-toggle name="enviar_homologacao" label="Visível para o engenheiro" />
                 </div>
+                @endcan
             </div>
             <x-slot name="footer">
                 <x-button color="primary" label="Adicionar" type="submit" />

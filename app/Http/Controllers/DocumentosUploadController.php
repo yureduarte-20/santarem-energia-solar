@@ -40,14 +40,14 @@ class DocumentosUploadController
         $validated = $request->validate([
             'arquivo' => 'required|file|mimes:png,jpg,docx,pdf,doc',
             'tipo_documento_id' => 'required|exists:' . TipoDocumento::class . ',id',
-            'enviar_homologacao' => 'required|in:on,off'
+            'enviar_homologacao' => 'nullable|in:on,off',
         ]);
         
         $success = DB::transaction(function () use ($validated, $pedido) {
             $pedidoDocumento = $pedido->pedido_documentos()->create([
                 'user_id' => Auth::user()->id,
                 'tipo_documento_id' => $validated['tipo_documento_id'],
-                'enviar_homologacao' => $validated['enviar_homologacao'] == 'on'
+                'enviar_homologacao' => ($validated['enviar_homologacao'] ?? 'off') == 'on'
             ]);
             $action = new CreateArquivoAction;
             $action->from_uploaded_file(
