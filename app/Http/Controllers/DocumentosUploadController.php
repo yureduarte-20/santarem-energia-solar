@@ -17,7 +17,7 @@ class DocumentosUploadController
     public function store(Request $request, PedidoDocumento $pedidoDocumento)
     {
         $validated = $request->validate([
-            'arquivo' => 'required|file|mimes:png,jpg,docx,pdf,doc',
+            'arquivo' => 'required|file|mimes:png,jpg,docx,pdf,doc,jpeg,xlsx',
             
         ]);
         $request->file();
@@ -38,7 +38,7 @@ class DocumentosUploadController
     public function storeFromPedido(Request $request, Pedido $pedido)
     {
         $validated = $request->validate([
-            'arquivo' => 'required|file|mimes:png,jpg,docx,pdf,doc',
+            'arquivo' => 'required|file|mimes:png,jpg,docx,pdf,doc,jpeg,xlsx',
             'tipo_documento_id' => 'required|exists:' . TipoDocumento::class . ',id',
             'enviar_homologacao' => 'nullable|in:on,off',
         ]);

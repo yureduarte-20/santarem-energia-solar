@@ -7,6 +7,7 @@ use App\Models\Pedido;
 use App\Models\PedidoDocumento;
 use App\Models\TipoDocumento;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use WireUi\Traits\Actions;
@@ -47,7 +48,8 @@ class Documento extends Component
     public function download($id)
     {
         $doc = PedidoDocumento::find($id);
-        $this->authorize('view', $doc);
+        $denied = Gate::inspect('view', $doc)->denied();
+        if($denied) return $this->notification()->error("Você não tem autorização para acessar esse recurso");
         if ($doc->arquivo?->path and Storage::exists($doc->arquivo->path)) {
             return Storage::download($doc->arquivo->path, $doc->arquivo->nome);
         }

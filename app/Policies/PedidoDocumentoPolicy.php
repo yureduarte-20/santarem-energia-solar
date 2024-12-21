@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\TipoConta;
 use App\Models\PedidoDocumento;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;

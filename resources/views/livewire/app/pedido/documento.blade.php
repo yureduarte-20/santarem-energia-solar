@@ -28,7 +28,7 @@
                     @endcan
                     @else
                     @can('show-docs')
-                    <x-button icon="download" color="primary" wire:click="download({{ $doc->id }})" />
+                        <x-button icon="download" color="primary" wire:click="download({{ $doc->id }})" />
                     @endcan
                     @endif
                     @can('edit-docs')
