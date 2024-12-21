@@ -60,6 +60,10 @@ class PedidoDocumento extends Model implements Arquivable
     {
         return $this->arquivo();
     }
+    public function acesso_documentos ()
+    {
+        return $this->hasMany(AcessoDocumento::class);
+    }
     public function user()
     {
         return $this->belongsTo(User::class);

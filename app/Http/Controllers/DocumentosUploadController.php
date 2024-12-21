@@ -6,6 +6,7 @@ use App\Models\Pedido;
 use App\Models\PedidoDocumento;
 use App\Actions\App\Arquivo\CreateArquivoAction;
 use App\Actions\App\Pedido\NovoDocumentoAction;
+use App\Enums\TipoConta;
 use App\Models\TipoDocumento;
 use App\Notifications\NewDocAttachedNotification;
 use Illuminate\Http\Request;
@@ -27,6 +28,9 @@ class DocumentosUploadController
             $pedidoDocumento,
             $validated['arquivo']
         );
+        $pedidoDocumento->acesso_documentos->create([
+            'tipo_conta' => TipoConta::ADMIN->name
+        ]);
         $notify = new NovoDocumentoAction;
         $notify($pedidoDocumento);
         if ($request->wantsJson()) {
@@ -54,6 +58,12 @@ class DocumentosUploadController
                 $pedidoDocumento,
                 $validated['arquivo']
             );
+            $pedidoDocumento->acesso_documentos->create([
+                'tipo_conta' => TipoConta::ADMIN->name
+            ]);
+            ($validated['enviar_homologacao'] ?? 'off') == 'on' and $pedidoDocumento->acesso_documentos->create([
+                'tipo_conta' => TipoConta::ENGENHEIRO->name
+            ]);
             $notify = new NovoDocumentoAction;
             $notify($pedidoDocumento);
             return true;

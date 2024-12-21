@@ -1,8 +1,9 @@
 <?php
 namespace App\Enums;
 enum TipoConta {
-    case ENGENHEIRO;
     case ADMIN;
+    case ENGENHEIRO;
+
     case VENDEDOR;
     case INSTALADOR;
 

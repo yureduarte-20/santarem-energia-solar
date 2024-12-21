@@ -25,7 +25,7 @@ class UpdateClienteAction
     {
         return [
             'nome' => 'required|min:3|max:255',
-            'cpf' => ['required','cpf', Rule::unique('users', 'cpf')->ignore($cliente->id)],
+            'cpf' => ['required','cpf', Rule::unique('clientes', 'cpf')->ignore($cliente->id)],
             'telefone' => 'nullable|regex:/^(\+[0-9]{2})?([0-9]{2})\s?[0-9]{8,9}$/',
             'email' => 'nullable|email',
             'endereco' => 'required|array',
