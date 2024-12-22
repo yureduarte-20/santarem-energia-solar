@@ -60,6 +60,17 @@ class Documento extends Component
             return Storage::download($doc->arquivo->path, $doc->arquivo->nome);
         }
     }
+    public function delete($id)
+    {
+        $pedidoDoc = PedidoDocumento::find($id);
+        $path = $pedidoDoc->arquivo?->path;
+        $pedidoDoc->arquivo?->delete();
+        $pedidoDoc->delete();
+        if ($path and Storage::exists($path)) {
+            Storage::delete($path);
+        }
+        $this->dialog()->success("Deletado com sucesso!");
+    }
     public function openModalAcesso($id)
     {
         $doc = PedidoDocumento::findOrFail($id);
@@ -70,8 +81,7 @@ class Documento extends Component
     {
         $docs = PedidoDocumento::findOrFail($this->modalAcesso);
         $docs->acesso_documentos()->delete();
-        foreach($this->acessos as $acceso)
-        {
+        foreach ($this->acessos as $acceso) {
             $docs->acesso_documentos()->create([
                 'tipo_conta' => $acceso
             ]);
@@ -85,7 +95,8 @@ class Documento extends Component
         return view('livewire.app.pedido.documento', [
             'tipo_documentos' => TipoDocumento::all(),
             'documentos' => (new GetDocumento)->query($this->pedido)->orderBy('id')->get(),
-            'tipos_contas' => TipoConta::cases()
+            'tipos_contas' => TipoConta::cases(),
+            'componentId' => $this->getId()
         ]);
     }
 }

@@ -31,11 +31,23 @@
                                 <x-button icon="download" color="primary" wire:click="download({{ $doc->id }})" />
                             @endcan
                         @endif
+                        @can('delete-docs')
+                            <div class="ml-2">
+                                <x-button icon="trash" color="negative"
+                                    x-on:click="$wireui.confirmDialog({
+                                    title:'Tem certeza que deseja apagar este documento?',
+                                    description:'Esta ação não pode ser desfeita.',
+                                    method: 'delete',
+                                    params: '{{ $doc->id }}'
+                            }, '{{ $componentId }}')" />
+                            </div>
+                        @endcan
                         @can('edit-docs')
                             <div class="ml-2">
                                 <x-button label="Definir acessos" wire:click='openModalAcesso({{ $doc->id }})' />
                             </div>
                         @endcan
+
                     </x-table.data-column>
                 </x-table.data-row>
             @endforeach
@@ -95,7 +107,12 @@
                 </x-select>
                 @can('edit-docs')
                     <div class="mt-2">
-                        <x-toggle name="enviar_homologacao" label="Visível para o engenheiro" />
+                        <x-select name='acessos' multiselect label="Quem pode acessar este documento?">
+                            @foreach ($tipos_contas as $tipo_conta)
+                                <x-select.option label="{{ $tipo_conta->label() }}" value="{{ $tipo_conta->name }}" />
+                            @endforeach
+                        </x-select>
+
                     </div>
                 @endcan
             </div>
@@ -108,9 +125,7 @@
     @if ($modalAcesso)
         <x-modal.card wire:model='modalAcesso'>
 
-            <x-select wire:model='acessos' 
-            multiselect
-            label="Quem pode acessar este documento?">
+            <x-select wire:model='acessos' multiselect label="Quem pode acessar este documento?">
                 @foreach ($tipos_contas as $tipo_conta)
                     <x-select.option label="{{ $tipo_conta->label() }}" value="{{ $tipo_conta->name }}" />
                 @endforeach

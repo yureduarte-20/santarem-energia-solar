@@ -15,7 +15,7 @@ class NovoDocumentoAction
         PedidoDocumento $pedidoDocumento
     ) {
         $users_ids = [];
-        if ($pedidoDocumento->enviar_homologacao) {
+        if ($pedidoDocumento->acesso_documentos()->where('tipo_conta', TipoConta::ENGENHEIRO->name)) {
             $users_ids = $pedidoDocumento->pedido->homologacao_engenheiros->map->conta->map->user_id->toArray();
         }
         $users_ids = array_merge(

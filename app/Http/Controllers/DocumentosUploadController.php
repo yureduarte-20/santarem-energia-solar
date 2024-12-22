@@ -19,7 +19,7 @@ class DocumentosUploadController
     {
         $validated = $request->validate([
             'arquivo' => 'required|file|mimes:png,jpg,docx,pdf,doc,jpeg,xlsx',
-            
+
         ]);
         $request->file();
         $action = new CreateArquivoAction;
@@ -41,12 +41,12 @@ class DocumentosUploadController
     }
     public function storeFromPedido(Request $request, Pedido $pedido)
     {
+
         $validated = $request->validate([
             'arquivo' => 'required|file|mimes:png,jpg,docx,pdf,doc,jpeg,xlsx',
             'tipo_documento_id' => 'required|exists:' . TipoDocumento::class . ',id',
-            'enviar_homologacao' => 'nullable|in:on,off',
+            'acessos' => 'nullable|json'
         ]);
-        
         $success = DB::transaction(function () use ($validated, $pedido) {
             $pedidoDocumento = $pedido->pedido_documentos()->create([
                 'user_id' => Auth::user()->id,
@@ -58,12 +58,14 @@ class DocumentosUploadController
                 $pedidoDocumento,
                 $validated['arquivo']
             );
-            $pedidoDocumento->acesso_documentos->create([
-                'tipo_conta' => TipoConta::ADMIN->name
-            ]);
-            ($validated['enviar_homologacao'] ?? 'off') == 'on' and $pedidoDocumento->acesso_documentos->create([
-                'tipo_conta' => TipoConta::ENGENHEIRO->name
-            ]);
+            $validated['acessos'] = $validated['acessos'] ?? '[]';
+            foreach (json_decode($validated['acessos']) as $acesso) {
+                if (array_search($acesso, TipoConta::cases_names())) {
+                    $pedidoDocumento->acesso_documentos()->create([
+                        'tipo_conta' => $acesso
+                    ]);
+                }
+            }
             $notify = new NovoDocumentoAction;
             $notify($pedidoDocumento);
             return true;

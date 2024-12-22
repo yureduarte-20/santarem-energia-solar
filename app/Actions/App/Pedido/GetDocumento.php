@@ -22,13 +22,16 @@ class GetDocumento
             TipoConta::INSTALADOR => PedidoDocumento::query()->when(
                 $pedido,
                 fn($q) => $q->where('pedido_id', $pedido->id)
-            )->whereHas('acesso_documentos', fn($q) => $q->where('tipo_conta', TipoConta::INSTALADOR->name)),
+            )->whereHas('acesso_documentos', fn($q) => $q->where('tipo_conta', TipoConta::INSTALADOR->name))
+                ->orWhere(fn($q) => $q->where('user_id', $user->id)->when($pedido, fn($q2) => $q2->where('pedido_id', $pedido->id))),
 
             TipoConta::VENDEDOR => PedidoDocumento::query()->when(
                 $pedido,
                 fn($q) => $q->where('pedido_id', $pedido->id)
-            )->whereHas('acesso_documentos', fn($q) => $q->where('tipo_conta', TipoConta::VENDEDOR->name)),
-            
+            )->whereHas('acesso_documentos', fn($q) => $q->where('tipo_conta', TipoConta::VENDEDOR->name))
+                ->orWhere(fn($q) => $q->where('user_id', $user->id)->when($pedido, fn($q2) => $q2->where('pedido_id', $pedido->id)))
+            ,
+
             TipoConta::ENGENHEIRO => PedidoDocumento::query()
                 ->when($pedido, fn($q) => $q->where('pedido_id', $pedido->id))
                 ->where('user_id', $user->id)
