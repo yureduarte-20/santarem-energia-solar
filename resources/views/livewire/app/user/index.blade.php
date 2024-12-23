@@ -15,10 +15,30 @@
         <x-slot name="dataRows">
             @foreach ($users as $user)
                 <x-table.data-row>
-                    <x-table.data-column>{{ $user->name }}</x-table.data-column>
+                    <x-table.data-column>
+                        <div class="flex flex-col">
+                            @if (!$user->active)
+                                <x-badge label="Inativado" color="negative" />
+                            @endif
+                            {{ $user->name }}
+                        </div>
+                    </x-table.data-column>
                     <x-table.data-column>{{ $user->email }}</x-table.data-column>
                     <x-table.data-column>{{ $user->conta->tipo->label() }}</x-table.data-column>
-                    <x-table.data-column></x-table.data-column>
+                    <x-table.data-column>
+                        @if ($user->active)
+                            @can('delete-user')
+                                <x-button icon="trash" color="negative"
+                                    x-on:click="$wireui.confirmDialog({
+                                title:'Deseja negar acesso a este usuário?',
+                                description: 'Esta ação não pode ser desfeita',
+                                method: 'inactive',
+                                params: '{{ $user->id }}',
+                                confirmLabel:'Sim, negar acesso.'
+                            }, '{{ $componentId }}')" />
+                            @endcan
+                        @endif
+                    </x-table.data-column>
                 </x-table.data-row>
             @endforeach
         </x-slot>

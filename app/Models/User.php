@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enums\TipoConta;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -21,6 +22,7 @@ class User extends Authenticatable
     use Notifiable;
     use TwoFactorAuthenticatable;
     use HasRoles;
+    use SoftDeletes;
 
 
     /**
@@ -32,6 +34,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'active'
     ];
 
     /**

@@ -18,10 +18,21 @@ class Index extends Component
         $this->notification()->success('Criado com sucesso!');
         $this->modalCreate = false;
     }
+    public function inactive($id)
+    {
+        if($id == auth()->user()->id){
+            return $this->notification()->error('Você não pode inativar sua própria conta!');
+        }
+        User::whereId($id)->update([
+            'active' => false
+        ]);
+        $this->notification()->success("Acesso do usuário negado!");        
+    }
     public function render()
     {
         return view('livewire.app.user.index', [
-            'users' => User::all()
+            'users' => User::all(),
+            'componentId' => $this->getId()
         ]);
     }
 }
