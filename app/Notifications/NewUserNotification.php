@@ -40,8 +40,7 @@ class NewUserNotification extends Notification
                     ->line('Nova conta criada')
                     ->line("Login: {$this->email}")
                     ->line("Senha: {$this->password}")
-                    ->action('Acessar o Sistema', url()->route('login'))
-                    ->line('Atensiosamente, Santarem Energia Solar');
+                    ->action('Acessar o Sistema', url()->route('login'));
     }
 
     /**
