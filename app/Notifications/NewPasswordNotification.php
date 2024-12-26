@@ -38,7 +38,7 @@ class NewPasswordNotification extends Notification
     {
         return (new MailMessage)
                     ->subject('Sua nova senha redefinida')
-                    ->line('A sua nova senha de acesso agora é:'.$this->password)
+                    ->line('A sua nova senha de acesso agora é: '.$this->password)
                     ->action('Acessar', url()->route('login'));
     }
 
