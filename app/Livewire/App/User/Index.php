@@ -2,6 +2,7 @@
 
 namespace App\Livewire\App\User;
 
+use App\Actions\App\User\GerarSenhaAleatoriaAction;
 use App\Livewire\Forms\CreateNewUserForm;
 use App\Models\User;
 use Livewire\Component;
@@ -27,6 +28,14 @@ class Index extends Component
             'active' => false
         ]);
         $this->notification()->success("Acesso do usuário negado!");        
+    }
+    public function gerarNovaSenha($id)
+    {
+        $user = User::find($id);
+        $this->authorize('update', $user);
+        $action = new GerarSenhaAleatoriaAction;
+        $result = $action($user);
+        $result and $this->dialog()->success('Nova senha criada', 'A senha foi enviada para o email do usuário.');
     }
     public function render()
     {

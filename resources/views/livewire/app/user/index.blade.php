@@ -26,18 +26,29 @@
                     <x-table.data-column>{{ $user->email }}</x-table.data-column>
                     <x-table.data-column>{{ $user->conta->tipo->label() }}</x-table.data-column>
                     <x-table.data-column>
-                        @if ($user->active)
-                            @can('delete-user')
-                                <x-button icon="trash" color="negative"
-                                    x-on:click="$wireui.confirmDialog({
+                        <div class="flex gap-2">
+                            @if ($user->active)
+                                @can('delete-user')
+                                    <x-button icon="trash" color="negative"
+                                        x-on:click="$wireui.confirmDialog({
                                 title:'Deseja negar acesso a este usuário?',
                                 description: 'Esta ação não pode ser desfeita',
                                 method: 'inactive',
                                 params: '{{ $user->id }}',
                                 confirmLabel:'Sim, negar acesso.'
                             }, '{{ $componentId }}')" />
-                            @endcan
-                        @endif
+                                @endcan
+                                @can('edit-user')
+                                    <x-button icon="lock-closed" color="secondary" label="Nova senha"
+                                        x-on:click="$wireui.confirmDialog({
+                                        title:'Deseja gerar uma nova senha aleatória para este usuário?',
+                                        description:'Ao gerar uma senha aleratória, a mesma será enviada para o email cadastrado do usuário',
+                                        method:'gerarNovaSenha',
+                                        params: '{{ $user->id }}'
+                                    }, '{{ $this->getId() }}')" />
+                                @endcan
+                            @endif
+                        </div>
                     </x-table.data-column>
                 </x-table.data-row>
             @endforeach
@@ -55,7 +66,8 @@
                 </option>
                 <option value="{{ App\Enums\TipoConta::INSTALADOR->name }}">
                     {{ \App\Enums\TipoConta::INSTALADOR->label() }}</option>
-                <option value="{{ App\Enums\TipoConta::VENDEDOR->name }}">{{ \App\Enums\TipoConta::VENDEDOR->label() }}
+                <option value="{{ App\Enums\TipoConta::VENDEDOR->name }}">
+                    {{ \App\Enums\TipoConta::VENDEDOR->label() }}
                 </option>
             </x-native-select>
 
