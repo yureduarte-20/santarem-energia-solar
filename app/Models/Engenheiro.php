@@ -24,6 +24,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Engenheiro whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Engenheiro whereNome($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Engenheiro whereUpdatedAt($value)
+ * @property int $conta_id
+ * @property-read \App\Models\Conta $conta
+ * @property-read mixed $nome
+ * @method static \Illuminate\Database\Eloquent\Builder|Engenheiro whereContaId($value)
  * @mixin \Eloquent
  */
 class Engenheiro extends Model

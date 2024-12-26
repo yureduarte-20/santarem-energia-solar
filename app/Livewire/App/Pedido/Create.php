@@ -2,6 +2,7 @@
 
 namespace App\Livewire\App\Pedido;
 
+use App\Enums\TipoConta;
 use App\Enums\TipoRede;
 use App\Livewire\Forms\CreatePedidoForm;
 use App\Models\Cliente;
@@ -70,7 +71,8 @@ class Create extends Component
     {
         return view('livewire.app.pedido.create', [
             'engenheiros' => Engenheiro::with('conta.user')->get(),
-            'documentos_disp' => TipoDocumento::get(['id', 'nome'])
+            'documentos_disp' => TipoDocumento::get(['id', 'nome']),
+            'options_vendedores' => User::whereHas('conta', fn($conta) => $conta->where('tipo', TipoConta::VENDEDOR->name))->get()
         ]);
     }
 }

@@ -12,7 +12,7 @@ class CreatePedidoForm extends AbstractForm
     #[Url('cliente')]
     public $cliente_id;
 
-    public $user_id;
+    public $user_id = [];
     public $documentos = [];
     public $qtde_contratado;
     public $qtde_pedido;

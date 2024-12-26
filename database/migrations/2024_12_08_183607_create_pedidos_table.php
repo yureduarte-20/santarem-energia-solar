@@ -20,7 +20,6 @@ return new class extends Migration {
             $table->date('data_pedido');
             $table->date('previsao_entrega');
             $table->date('data_entrega')->nullable();
-            $table->foreignIdFor(User::class)->constrained();
             $table->unsignedInteger('qtde_contratado');
             $table->unsignedInteger('qtde_pedido');
             $table->foreignIdFor(Cliente::class)->constrained();

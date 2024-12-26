@@ -14,13 +14,9 @@
             <x-input label="Previsão de Entrega" wire:model='form.previsao_entrega' type="date" />
         </div>
         <div>
-            <x-native-select label="Vendedor" wire:model='form.user_id'>
-                <option value>Selecione um vendedor</option>
-                @foreach (\App\Models\User::all() as $user)
-                    <option value="{{ $user->id }}">
-                        {{ $user->name }}</option>
-                @endforeach
-            </x-native-select>
+            <x-select label="Vendedor" wire:model='form.user_id' multiselect  :options="$options_vendedores" option-value="id" option-label="name" option-description="email"/>
+             
+            
         </div>
         <x-select label="Homologação do Engenheiro" wire:model='form.engenheiros_homologacao'>
             @foreach ($engenheiros as $eng)

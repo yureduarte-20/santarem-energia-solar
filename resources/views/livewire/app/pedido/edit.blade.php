@@ -13,13 +13,8 @@
             <x-input label="Previsão de Entrega" wire:model='previsao_entrega' type="date" />
         </div>
         <div>
-            <x-native-select label="Vendedor" wire:model='user_id'>
-                <option value>Selecione um vendedor</option>
-                @foreach (\App\Models\User::all() as $user)
-                    <option value="{{ $user->id }}">
-                        {{ $user->name }}</option>
-                @endforeach
-            </x-native-select>
+            <x-select label="Vendedor" multiselect :options="$options_vendedores" option-value="id" option-label="name"
+                wire:model='user_id' />
         </div>
         <x-select :options="$engenheiros" option-label="nome" option-value="id" label="Homologação do Engenheiro"
             wire:model='engenheiros_homologacao'>
@@ -51,10 +46,8 @@
             </x-native-select>
         </div>
         <div>
-            <x-select  label="Instaladores" 
-            wire:model='instaladores'
-            multiselect
-            option-label="name" option-value="id" :options="$options_instaladores" />
+            <x-select label="Instaladores" wire:model='instaladores' multiselect option-label="name" option-value="id"
+                :options="$options_instaladores" />
         </div>
         <div class="pt-5">
             @can('edit-pedidos')
@@ -98,7 +91,7 @@
                 @endswitch
             @endcan
         </div>
-        
+
         <div class="lg:col-span-3">
             <x-textarea label="Observações" wire:model='descricao'></x-textarea>
         </div>
@@ -126,7 +119,7 @@
             @endif
             <hr class="mt-3" />
         </div>
-        
+
     </div>
     <div class="mt-2">
         @can('edit-pedidos')

@@ -16,6 +16,7 @@ class CreatePedidoAction
         $validated = $errorBag ? $validator->validateWithBag($errorBag) : $validator->validate();
         return DB::transaction(function () use ($validated) {
             $pedido = Pedido::create($validated);
+            $pedido->users()->attach($validated['user_id']);
             $validated['engenheiros_homologacao'] and $pedido->homologacao_engenheiros()->attach($validated['engenheiros_homologacao']);
             foreach ($validated['documentos'] as $doc_id) {
                 $pedido->pedido_documentos()->create(['tipo_documento_id' => $doc_id, 'user_id' => Auth::user()->id]);
@@ -35,7 +36,8 @@ class CreatePedidoAction
             'numero' => 'required|unique:pedidos,numero',
             'cliente_id' => 'required|exists:clientes,id',
             'data_pedido' => 'required|date',
-            'user_id' => 'required|exists:users,id',
+            'user_id' => 'required|array',
+            'user_id.*' => 'required|exists:users,id',
             'previsao_entrega' => 'required|date|after_or_equal:data_pedido',
             'qtde_contratado' => 'required|numeric|min:1',
             'qtde_pedido' => 'required|numeric|min:0',

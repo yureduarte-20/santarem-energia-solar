@@ -7,7 +7,7 @@ use App\Enums\TipoRede;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- *
+ * 
  *
  * @property int $id
  * @property string $numero
@@ -52,6 +52,16 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Pedido whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Pedido whereValor($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Pedido whereValorContratual($value)
+ * @property StatusPedido $status
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $instaladores
+ * @property-read int|null $instaladores_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Rateio> $rateios
+ * @property-read int|null $rateios_count
+ * @property-read int|null $user_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Pedido whereQtdePedido($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Pedido whereStatus($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
+ * @property-read int|null $users_count
  * @mixin \Eloquent
  */
 class Pedido extends Model
@@ -61,7 +71,6 @@ class Pedido extends Model
         'data_pedido',
         'previsao_entrega',
         'data_entrega',
-        'user_id',
         'qtde_contratado',
         'qtde_pedido',
         'cliente_id',
@@ -79,9 +88,9 @@ class Pedido extends Model
         'data_pedido' => 'date:Y-m-d',
         'status' => StatusPedido::class
     ];
-    public function user()
+    public function users()
     {
-        return $this->belongsTo(User::class)->withTrashed();
+        return $this->belongsToMany(User::class, 'pedido_user')->withTrashed();
     }
 
     public function cliente()

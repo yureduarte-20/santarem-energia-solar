@@ -64,6 +64,7 @@ class Edit extends Component
         $this->engenheiros_homologacao = $this->pedido->homologacao_engenheiros->pluck('id')->first();
         $this->rateios = $this->pedido->rateios?->toArray();
         $this->instaladores = $this->pedido->instaladores->map->pivot->pluck('user_id')->toArray();
+        $this->user_id = $this->pedido->users->map->pivot->pluck('user_id')->toArray();
     }
     public function save()
     {
@@ -85,9 +86,10 @@ class Edit extends Component
                 $this->pedido->rateios()->create($rateio);
             }
         }
-        if($validated['instaladores']){
+        if ($validated['instaladores']) {
             $this->pedido->instaladores()->sync($validated['instaladores']);
         }
+        $this->pedido->users()->sync($validated['user_id'] ?? []);
         $this->notification()->success("Atualizado com sucesso!");
     }
     public function homologar()
@@ -109,7 +111,8 @@ class Edit extends Component
             'numero' => ['required', Rule::unique('pedidos', 'numero')->ignore($this->pedido->id)],
             'cliente_id' => 'required|exists:clientes,id',
             'data_pedido' => 'required|date',
-            'user_id' => 'required|exists:users,id',
+            'user_id' => 'required|array',
+            'user_id.*' => 'required|exists:users,id',
             'previsao_entrega' => 'required|date|after_or_equal:data_pedido',
             'qtde_contratado' => 'required|numeric|min:1',
             'qtde_pedido' => 'required|numeric|min:0',
@@ -167,7 +170,8 @@ class Edit extends Component
             'engenheiros' => Engenheiro::get(),
             'documentos_disp' => TipoDocumento::get(['id', 'nome']),
             'componentId' => $this->getId(),
-            'options_instaladores' => User::instaladores()->get()
+            'options_instaladores' => User::instaladores()->get(),
+            'options_vendedores' => User::whereHas('conta', fn($conta) => $conta->where('tipo', TipoConta::VENDEDOR->name))->get()
         ]);
     }
 }

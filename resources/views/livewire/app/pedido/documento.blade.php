@@ -39,7 +39,7 @@
                                     description:'Esta ação não pode ser desfeita.',
                                     method: 'delete',
                                     params: '{{ $doc->id }}'
-                            }, '{{ $componentId }}')" />
+                            }, '{{ $this->getId() }}')" />
                             </div>
                         @endcan
                         @can('edit-docs')

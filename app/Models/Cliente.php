@@ -27,6 +27,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Cliente whereNome($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Cliente whereTelefone($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Cliente whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Pedido> $pedidos
+ * @property-read int|null $pedidos_count
  * @mixin \Eloquent
  */
 class Cliente extends Model

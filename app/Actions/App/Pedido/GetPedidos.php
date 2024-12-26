@@ -19,7 +19,7 @@ class GetPedidos
                 'instaladores',
                 fn($q) => $q->where('instaladores_pedidos.user_id', $user->id)
             ),
-            TipoConta::VENDEDOR => Pedido::query()->where('user_id', $user->id),
+            TipoConta::VENDEDOR => Pedido::query()->whereHas('user', fn($q) =>  $q->where('pedido_user.user_id', $user->id)),
             TipoConta::ENGENHEIRO => Pedido::query()->whereHas(
                 'homologacao_engenheiros',
                 fn($query) => $query->where('homologacao_engenheiros.engenheiro_id', $conta->engenheiro->id)

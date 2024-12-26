@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Query\Builder;
 
 /**
- *
+ * 
  *
  * @property int $id
  * @property int $pedido_id
@@ -31,6 +31,13 @@ use Illuminate\Database\Query\Builder;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PedidoDocumento wherePedidoId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PedidoDocumento whereTipoDocumentoId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PedidoDocumento whereUpdatedAt($value)
+ * @property bool $enviar_homologacao
+ * @property int $user_id
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AcessoDocumento> $acesso_documentos
+ * @property-read int|null $acesso_documentos_count
+ * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|PedidoDocumento whereEnviarHomologacao($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PedidoDocumento whereUserId($value)
  * @mixin \Eloquent
  */
 class PedidoDocumento extends Model implements Arquivable
