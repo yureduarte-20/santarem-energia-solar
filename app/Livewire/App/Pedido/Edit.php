@@ -151,7 +151,7 @@ class Edit extends Component
                 $engenheiro->conta->user->notifyNow(new NewProjectNotification($this->pedido));
             });
             $this->dialog()->success("Projeto enviado para a homologação.");
-        } else if (StatusPedido::FINALIZADO->name == $status and $this->pedido->status == StatusPedido::ENVIADO_ENGENHEIRO) {
+        } else if (StatusPedido::FINALIZADO->name == $status and $this->pedido->status == StatusPedido::HOMOLOGADO) {
             ['data_entrega' => $data_entrega] = $this->validate([
                 'data_entrega' => 'date'
             ]);

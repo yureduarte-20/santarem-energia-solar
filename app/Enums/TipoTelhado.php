@@ -2,7 +2,7 @@
 namespace App\Enums;
 enum TipoTelhado
 {
-    case TELHADO;
+    case METALICO;
     case SOLO;
     case CERAMICO;
     case FIBRO_CIMENTO_MADEIRA;
@@ -16,9 +16,20 @@ enum TipoTelhado
         return match($this){
             TipoTelhado::CERAMICO => __('Cerâmico'),
             TipoTelhado::SOLO => __('Solo'),
-            TipoTelhado::TELHADO => __('Telhado'),
+            TipoTelhado::METALICO => __('Metálico'),
             TipoTelhado::FIBRO_CIMENTO_MADEIRA => __('Fibro Cimento (Madeira)'),
             TipoTelhado::FIBRO_CIMENTO_FERRO => __('Fibro Cimento (Ferro)')
+        };
+    }
+    public static function fromString(string $value)
+    {
+        return match(str($value)->upper()->trim()->toString()){
+            "FIBROCIMENTO (MADEIRA)" => TipoTelhado::FIBRO_CIMENTO_MADEIRA,
+            "CERAMICO" => TipoTelhado::CERAMICO,
+            "FIBROCIMENTO (FERRO)" => TipoTelhado::FIBRO_CIMENTO_FERRO,
+            "SOLO" => TipoTelhado::SOLO,
+            "METÁLICO", "METALICO" => TipoTelhado::METALICO,
+            default => null
         };
     }
 }

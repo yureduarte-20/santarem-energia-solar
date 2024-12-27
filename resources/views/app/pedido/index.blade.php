@@ -43,7 +43,7 @@
                             <x-table.data-column>R$ {{number_format($p->valor, 2, ',','.')}}</x-table.data-column>
                         @endcan
                         <x-table.data-column>
-                            <x-tipo-rede tipoRede="{{$p->tipo_rede->name}}" />
+                            <x-tipo-rede tipoRede="{{$p->tipo_rede?->name ?? 'Não especificado'}}" />
                         </x-table.data-column>
                         <x-table.data-column>
                             <x-button icon="pencil" :href="route('pedido.edit', $p)" color="primary"/>

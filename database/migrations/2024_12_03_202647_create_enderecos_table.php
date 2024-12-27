@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('rua')->nullable();
             $table->string('numero')->nullable();
             $table->string('bairro')->nullable();
-            $table->string('cep');
+            $table->string('cep')->nullable();
             $table->string('cidade');
             $table->string('uf', 2);
             $table->morphs('addressable');
