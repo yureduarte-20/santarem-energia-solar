@@ -3,10 +3,13 @@
 namespace App\Livewire\App\Pedido;
 
 use App\Actions\App\Pedido\GetDocumento;
+use App\Actions\App\Pendencia\UpdatePendenciaStatusAction;
 use App\Enums\TipoConta;
+use App\Livewire\Forms\CreatePendenciaForm;
 use App\Models\AcessoDocumento;
 use App\Models\Pedido;
 use App\Models\PedidoDocumento;
+use App\Models\Pendencia;
 use App\Models\TipoDocumento;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -18,7 +21,9 @@ class Documento extends Component
 {
     use Actions;
     public Pedido $pedido;
+    public CreatePendenciaForm $pendenciaForm;
     public $modalUpload = false;
+    public $pendenciaModal = false;
     public $modalDocumento = false;
     public $modalAcesso = false;
     public $tipoDocumento;
@@ -33,6 +38,11 @@ class Documento extends Component
         $docs->load('tipo_documento');
         $ids = $docs->pluck('id')->toArray();
         $this->docs = array_combine($ids, $docs->toArray());
+        $conta = Auth::user()->conta;
+        if ($conta->tipo == TipoConta::ENGENHEIRO) {
+            $this->pendenciaForm->engenheiro_id = $conta->engenheiro->id;
+            $this->pendenciaForm->pedido_id = $pedido->id;
+        }
     }
     public function edit($id)
     {
@@ -59,6 +69,17 @@ class Documento extends Component
         if ($doc->arquivo?->path and Storage::exists($doc->arquivo->path)) {
             return Storage::download($doc->arquivo->path, $doc->arquivo->nome);
         }
+    }
+    public function createPendencia()
+    {
+        $this->pendenciaForm->verify();
+        $result = $this->pendenciaForm->save();
+        $result and $this->dialog()
+            ->success(
+                "A pendencia foi cadastrada com sucesso! ",
+                "O responsável será notificado e resolverá o mais breve possível."
+            );
+        $this->pendenciaModal = false;
     }
     public function delete($id)
     {
@@ -89,6 +110,12 @@ class Documento extends Component
         $this->notification()->success("Acesso Atualizado com sucesso!");
         $this->resetExcept('pedido');
 
+    }
+    public function pending($id)
+    {
+        $pendencia = Pendencia::findOrFail($id);
+        $action = new UpdatePendenciaStatusAction;
+        $action($pendencia) and $this->dialog()->success('A pendencia foi declarada como resolvida', 'O engenheiro será notificado.') ;
     }
     public function render()
     {

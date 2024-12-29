@@ -115,4 +115,8 @@ class Pedido extends Model
     {
         return $this->belongsToMany(User::class, 'instaladores_pedidos')->withTimestamps();
     }
+    public function pendencias()
+    {
+        return $this->hasMany(Pendencia::class);
+    }
 }

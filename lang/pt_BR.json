@@ -164,5 +164,7 @@
   "Engineer": "Engenheiro",
   "Orders":"Pedidos/Projetos",
   "Users":"Usuários",
-  "Regards":"Atensiosamente"
+  "Regards":"Atensiosamente",
+  "confirm":"Confirma",
+  "cancel":"Cancelar"
 }

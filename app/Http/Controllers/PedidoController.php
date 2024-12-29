@@ -10,10 +10,8 @@ class PedidoController extends Controller
 {
     public function index()
     {
-        $builder = (new GetPedidos)->query();
-        return view('app.pedido.index', [
-            'pedidos' => $builder->orderByDesc('created_at')->paginate(10)
-        ]);
+
+        return view('app.pedido.index');
     }
     public function edit(Pedido $pedido)
     {

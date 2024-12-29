@@ -1,4 +1,6 @@
 <div class="" x-on:pedido-updated.window="$wire.$refresh()">
+
+
     <x-table.data-table>
         <x-slot name="headerColumns">
             <x-table.header-column>Tipo de Documento</x-table.header-column>
@@ -56,6 +58,42 @@
 
         </x-slot>
     </x-table.data-table>
+    @hasrole('ENGENHEIRO')
+        <div class="my-2">
+            <x-button label="Adicionar pendências" x-on:click="$wire.$set('pendenciaModal', true)" color="negative" />
+        </div>
+    @endhasrole
+    @if ($pedido->pendencias()->exists())
+        <div class="mt-2">
+            <hr />
+            <h3 class="text-2xl">Pendências</h3>
+            @foreach ($pedido->pendencias as $pend)
+                <div class="flex flex-col gap-2 my-1">
+                    <div class="flex items-center gap-1">
+                        <span>Declarações do(a) Engenheiro: {{ $pend->engenheiro->nome }}</span>
+                        @if(!$pend->atendida and auth()->user()->hasRole(\App\Enums\TipoConta::ADMIN->name) )
+                             <x-button positive icon="badge-check"
+                                label="Declarar resolvida"
+                                outline
+                                x-on:click="$wireui.confirmDialog( {
+                                  title:'Deseja declarar que a pendência foi atendida?',
+                                  description: 'Ao fazer isto, o engenheiro será notificado via email.',
+                                  method:'pending',
+                                  acceptLabel:'Sim',
+                                  rejectLabel:'Cancelar',
+                                  params:'{{$pend->id}}'
+                                }, '{{$this->getId()}}')"
+                             />
+                             @elseif($pend->atendida)
+                             <x-badge color="positive" label="Resolvida" />
+                        @endif
+                    </div>
+                    <x-textarea disabled>{{ $pend->conteudo }}</x-textarea>
+                </div>
+            @endforeach
+        </div>
+    @endif
+
     <x-modal.card title="Enviar Documento" wire:model="modalUpload">
         @if ($modalUpload)
             <form action="{{ route('documento.store', $modalUpload) }}" method="POST" enctype="multipart/form-data">
@@ -137,4 +175,12 @@
             </x-slot>
         </x-modal.card>
     @endif
+
+    <x-modal.card wire:model='pendenciaModal' title="Adicionar uma nova pendencia ao projeto">
+        <x-textarea wire:model='pendenciaForm.conteudo' label="Declarações" />
+        <x-slot:footer>
+            <x-button label="Salvar" wire:click='createPendencia' color="primary" />
+            <x-button label="Cancelar" x-on:click="close" />
+        </x-slot:footer>
+    </x-modal.card>
 </div>

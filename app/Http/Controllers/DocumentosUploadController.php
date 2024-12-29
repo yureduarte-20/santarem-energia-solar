@@ -28,7 +28,7 @@ class DocumentosUploadController
             $pedidoDocumento,
             $validated['arquivo']
         );
-        $pedidoDocumento->acesso_documentos->create([
+        $pedidoDocumento->acesso_documentos()->create([
             'tipo_conta' => TipoConta::ADMIN->name
         ]);
         $notify = new NovoDocumentoAction;
