@@ -15,4 +15,5 @@ enum  StatusPedido {
             StatusPedido::HOMOLOGADO => "Homologado"
         };
     }
+
 }
