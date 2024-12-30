@@ -1,12 +1,12 @@
-@props(['series', 'horizontal', 'title'])
+@props(['series', 'horizontal' => false, 'title' => ''])
 @php
-    $id = \Str::random();
+    $id ='chart_id_'. \Str::random();
 @endphp
 
 <div id="{{ $id }}"></div>
 @push('custom-scripts')
     <script>
-        window.addEventListener('DOMContentLoaded', () => {
+        window.addEventListener('livewire:navigated', () => {
             const options = {
                 chart: {
                     type: 'bar'
@@ -25,8 +25,14 @@
                     }
                 }
             };
-            const chart = new window.apex(document.querySelector('#{{ $id }}'), options)
+            window.{{$id}} = new window.apex(document.querySelector('#{{ $id }}'), options)
+            const chart = window.{{$id}} ;
             chart.render()
-        })
+        }, { once:true })
+
+        document.addEventListener('livewire:navigate', (event) => {
+            const chart = window.{{$id}} ;
+            chart?.destroy()
+        }, { once:true });
     </script>
 @endpush
