@@ -11,7 +11,7 @@
                 chart: {
                     type: 'bar'
                 },
-                series: @json($series),
+                series: @json($series) ,
                 title: @if (is_array($title))
                     @json($title)
                 @else

@@ -68,7 +68,7 @@
                 </div>
             @endcan
             <div class="bg-white rounded-md border border-gray-100 p-6 shadow-md shadow-black/5">
-                {{$dados}}
+
                 <x-apex.bars :series="[ ['data' => $dados] ]" :title="[ 'text' => 'Por situação', 'align' => 'center' ]" :horizontal="false"/>
             </div>
         </div>
