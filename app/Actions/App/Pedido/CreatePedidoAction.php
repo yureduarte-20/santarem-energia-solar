@@ -18,7 +18,7 @@ class CreatePedidoAction
             $pedido = Pedido::create($validated);
             $pedido->users()->attach($validated['user_id']);
             $validated['engenheiros_homologacao'] and $pedido->homologacao_engenheiros()->attach($validated['engenheiros_homologacao']);
-            foreach ($validated['documentos'] as $doc_id) {
+            foreach (($validated['documentos'] ?? []) as $doc_id) {
                 $pedido->pedido_documentos()->create(['tipo_documento_id' => $doc_id, 'user_id' => Auth::user()->id]);
             }
             $rateios = $validated['rateios'];
