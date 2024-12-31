@@ -7,7 +7,7 @@ use App\Enums\TipoRede;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $numero
@@ -86,7 +86,9 @@ class Pedido extends Model
         'data_entrega' => 'date:Y-m-d',
         'previsao_entrega' => 'date:Y-m-d',
         'data_pedido' => 'date:Y-m-d',
-        'status' => StatusPedido::class
+        'status' => StatusPedido::class,
+        'valor_contratual' => 'float',
+        'valor' => 'float'
     ];
     public function users()
     {

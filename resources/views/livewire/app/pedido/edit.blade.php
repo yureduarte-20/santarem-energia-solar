@@ -1,4 +1,5 @@
 <div x-on:pedido-updated.window="$wire.$refresh()">
+    <x-errors />
     <div class="grid lg:grid-cols-3 grid-cols-1 gap-2">
         <div>
             <x-input label="Número do Pedido" wire:model='numero' />

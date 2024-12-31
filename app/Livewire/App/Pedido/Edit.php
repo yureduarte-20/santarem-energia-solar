@@ -153,7 +153,7 @@ class Edit extends Component
             $this->dialog()->success("Projeto enviado para a homologação.");
         } else if (StatusPedido::FINALIZADO->name == $status and $this->pedido->status == StatusPedido::HOMOLOGADO) {
             ['data_entrega' => $data_entrega] = $this->validate([
-                'data_entrega' => 'date'
+                'data_entrega' => 'required|date'
             ]);
             $this->pedido->update([
                 'entregue' => true,
