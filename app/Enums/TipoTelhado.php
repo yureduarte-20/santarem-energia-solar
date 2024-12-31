@@ -5,6 +5,7 @@ enum TipoTelhado
     case METALICO;
     case SOLO;
     case CERAMICO;
+    case TELHADO;
     case FIBRO_CIMENTO_MADEIRA;
     case FIBRO_CIMENTO_FERRO;
     public static function values()
@@ -18,7 +19,8 @@ enum TipoTelhado
             TipoTelhado::SOLO => __('Solo'),
             TipoTelhado::METALICO => __('Metálico'),
             TipoTelhado::FIBRO_CIMENTO_MADEIRA => __('Fibro Cimento (Madeira)'),
-            TipoTelhado::FIBRO_CIMENTO_FERRO => __('Fibro Cimento (Ferro)')
+            TipoTelhado::FIBRO_CIMENTO_FERRO => __('Fibro Cimento (Ferro)'),
+            TipoTelhado::TELHADO => 'Telhado'
         };
     }
     public static function fromString(string $value)
@@ -29,6 +31,7 @@ enum TipoTelhado
             "FIBROCIMENTO (FERRO)" => TipoTelhado::FIBRO_CIMENTO_FERRO,
             "SOLO" => TipoTelhado::SOLO,
             "METÁLICO", "METALICO" => TipoTelhado::METALICO,
+            "TELHADO" => TipoTelhado::TELHADO,
             default => null
         };
     }
