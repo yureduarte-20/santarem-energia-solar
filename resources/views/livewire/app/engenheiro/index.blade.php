@@ -1,8 +1,6 @@
 <div>
     <section class="my-2">
-        <div class="mb-1">
-            <x-input label="Pesquisa" aria-autocomplete="false" autocomplete="false" wire:model.live.debounce='query' />
-        </div>
+        
         @can('create-engenheiros')
             <x-button label="Criar" icon="plus" color="primary" x-on:click="$wire.$set('createModal', true)" />
         @endcan
