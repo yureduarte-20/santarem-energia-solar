@@ -66,10 +66,21 @@
                         </div>
                     </div>
                 </div>
+               
+                <div class="bg-white rounded-md border border-gray-100 p-6 shadow-md shadow-black/5">
+                    <x-apex.line 
+                        title="Faturamento por mês"
+                        :series="[
+                            ['data' => $faturamento_mes->pluck('total_valor')->toArray(), 'name' => 'Faturamento'], 
+                            ['data' => $lucro_bruto_mes->pluck('lucro_bruto')->toArray(), 'name' => 'Lucro Bruto']
+                        ]" 
+                        :xaxis="[ 'categories' =>  $faturamento_mes->pluck('mes')->toArray() ]" />
+                </div>
+                
             @endcan
             <div class="bg-white rounded-md border border-gray-100 p-6 shadow-md shadow-black/5">
 
-                <x-apex.bars :series="[ ['data' => $dados] ]" :title="[ 'text' => 'Por situação', 'align' => 'center' ]" :horizontal="false"/>
+                <x-apex.bars :series="[['data' => $dados]]" :title="['text' => 'Por situação', 'align' => 'center']" :horizontal="false" />
             </div>
         </div>
     </x-general.dashboard>

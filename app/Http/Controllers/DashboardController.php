@@ -23,6 +23,8 @@ class DashboardController extends Controller
                 'y' => $item->contagem
             ];
         });
-        return view('dashboard', compact('faturamento_valor_final', 'lucro', 'dados'));
+        $faturamento_mes = $this->actions->getFaturamentoPorMes();
+        $lucro_bruto_mes = $this->actions->getLucroBrutoPorMes();
+        return view('dashboard', compact('faturamento_valor_final', 'lucro', 'dados', 'faturamento_mes', 'lucro_bruto_mes'));
     }
 }
