@@ -98,6 +98,10 @@ class Pedido extends Model
     {
         return $this->belongsToMany(User::class, 'pedido_user')->withTrashed();
     }
+    public function instalacao()
+    {
+        return $this->hasOne(Instalacao::class);
+    }
 
     public function cliente()
     {

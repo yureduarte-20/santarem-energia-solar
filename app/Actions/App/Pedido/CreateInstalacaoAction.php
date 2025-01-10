@@ -1,0 +1,45 @@
+<?php
+namespace App\Actions\App\Pedido;
+
+use App\Enums\TipoRede;
+use App\Models\Instalacao;
+use App\Models\Pedido;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+
+class CreateInstalacaoAction
+{
+    public function rules()
+    {
+        return [
+            'pedido_id' => 'required|exists:pedidos,id',
+            'data_prevista' => 'required|date',
+            'data_instalada' => 'nullable|date|after_or_equal:data_prevista',
+            'observacao' => 'nullable|string|min:3'
+        ];
+    }
+
+    public function __invoke(array $input, string $bag = null)
+    {
+        $validator = Validator::make($input, $this->rules(), $this->messages(), $this->attributes());
+        $validated = $bag ? $validator->validateWithBag($bag) : $validator->validated();
+        return Instalacao::create($validated);
+    }
+
+    public function messages()
+    {
+        return [
+            'data_instalada.after_or_equal' => 'A data de instalação previsa ser depois da data prevista de instalação'
+        ];
+    }
+    public function attributes()
+    {
+        return [
+            'pedido_id' => 'pedido',
+            'data_prevista' => 'data prevista de instalação',
+            'data_instalada' => 'data de instalação',
+            'observacao' => 'observações'
+        ];
+    }
+}
