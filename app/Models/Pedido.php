@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\SituacaoTRT;
 use App\Enums\StatusPedido;
 use App\Enums\TipoRede;
 use Illuminate\Database\Eloquent\Model;
@@ -79,7 +80,9 @@ class Pedido extends Model
         'descricao',
         'tipo_rede',
         'entregue',
-        'status'
+        'status',
+        'adequacao_poste',
+        'trt'
     ];
     protected $casts = [
         'tipo_rede' => TipoRede::class,
@@ -88,7 +91,8 @@ class Pedido extends Model
         'data_pedido' => 'date:Y-m-d',
         'status' => StatusPedido::class,
         'valor_contratual' => 'float',
-        'valor' => 'float'
+        'valor' => 'float',
+        'trt' => SituacaoTRT::class
     ];
     public function users()
     {

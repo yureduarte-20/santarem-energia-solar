@@ -2,6 +2,7 @@
 
 namespace App\Livewire\App\Pedido;
 
+use App\Enums\SituacaoTRT;
 use App\Enums\StatusPedido;
 use App\Enums\TipoConta;
 use App\Enums\TipoRede;
@@ -41,6 +42,8 @@ class Edit extends Component
     public $valor;
     public $tipo_rede;
     public $descricao;
+    public $adequacao_poste;
+    public $trt;
     public $rateios;
     public function boot(WhatsappServiceInterface $whatsappService)
     {
@@ -122,8 +125,10 @@ class Edit extends Component
             'engenheiros_homologacao' => 'nullable|exists:engenheiros,id',
             'descricao' => 'nullable',
             'rateios' => 'nullable|array',
+            'adequacao_poste' => 'required|bool',
             'rateios.*.nome' => 'required|min:3',
             'instaladores' => 'array',
+            'trt' => 'required|in:' . join(',', SituacaoTRT::cases_names()),
             'instaladores.*' => [
                 'required',
                 Rule::exists('users', 'id')

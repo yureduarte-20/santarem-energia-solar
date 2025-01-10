@@ -25,6 +25,7 @@ class CreatePedidoForm extends AbstractForm
     public $previsao_entrega;
     public $numero;
     public $rateios = [];
+    public $adequacao_poste = 0;
     public function addRateio()
     {
         $this->rateios = $this->rateios ?? [];

@@ -30,7 +30,8 @@ class DashboardController extends Controller
             'lucro_bruto_mes' => $lucro_bruto_mes,
             'dados' => $dados,
             'pendencias' => $this->actions->pendencias(),
-            'pendencias_documentos' => $this->actions->pendencias_documentos()
+            'pendencias_documentos' => $this->actions->pendencias_documentos(),
+            'trt' => $this->actions->trt()
         ]);
     }
 }

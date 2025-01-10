@@ -54,7 +54,19 @@
                     }"
                     />
             </div>
-
+            <div class="bg-white rounded-md border border-gray-100 p-6 shadow-md shadow-black/5">
+                <x-apex.pie
+                    :title="['align' => 'center', 'text' => 'TRT\'s']"
+                    :series="$trt->pluck('qtde')->toArray()"
+                    :labels="$trt->pluck('situacao')->toArray()"
+                    onClickLegend="(chart, seriesIndex, opts) => {
+                        const data = {!! json_encode($trt->pluck('situacao')->toArray()) !!}  ;
+                        let url = `{{route('pedido.index')}}` ;
+                        url += '?trt=' + data[seriesIndex] ;
+                        Livewire.navigate(url)
+                    }"
+                    />
+            </div>
         </div>
     </x-general.dashboard>
 </x-app-layout>

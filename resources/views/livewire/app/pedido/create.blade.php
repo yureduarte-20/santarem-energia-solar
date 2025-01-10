@@ -15,8 +15,6 @@
         </div>
         <div>
             <x-select label="Vendedor" wire:model='form.user_id' multiselect  :options="$options_vendedores" option-value="id" option-label="name" option-description="email"/>
-             
-            
         </div>
         <x-select label="Homologação do Engenheiro" wire:model='form.engenheiros_homologacao'>
             @foreach ($engenheiros as $eng)
@@ -72,6 +70,12 @@
                     <option value="{{ $tipo->name }}">{{ $tipo->label() }}</option>
                 @endforeach
 
+            </x-native-select>
+        </div>
+        <div>
+            <x-native-select label="Adequação de Poste" wire:model='form.adequacao_poste' >
+                <option value="0">Não</option>
+                <option value="1">Sim</option>
             </x-native-select>
         </div>
         <div class="lg:col-span-3">

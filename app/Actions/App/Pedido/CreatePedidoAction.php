@@ -48,7 +48,8 @@ class CreatePedidoAction
             'documentos.*' => 'required|exists:tipo_documentos,id',
             'descricao' => 'nullable|min:3',
             'rateios' => 'nullable|array',
-            'rateios.*.nome' => 'required|min:3'
+            'rateios.*.nome' => 'required|min:3',
+            'adequacao_poste' => 'required|boolean'
         ];
     }
 }

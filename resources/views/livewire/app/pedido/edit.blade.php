@@ -47,9 +47,24 @@
             </x-native-select>
         </div>
         <div>
+            <x-native-select label="Adequação de Poste" wire:model='adequacao_poste'>
+                <option value="0">Não</option>
+                <option value="1">Sim</option>
+            </x-native-select>
+        </div>
+        <div>
+            <x-native-select label="TRT" wire:model='trt'>
+                @foreach (\App\Enums\SituacaoTRT::cases() as $trt)
+                    <option value="{{ $trt->name }}">{{ $trt->label() }}</option>
+                @endforeach
+
+            </x-native-select>
+        </div>
+        <div>
             <x-select label="Instaladores" wire:model='instaladores' multiselect option-label="name" option-value="id"
                 :options="$options_instaladores" />
         </div>
+
         <div class="pt-5">
             @can('edit-pedidos')
                 @switch($pedido->status)

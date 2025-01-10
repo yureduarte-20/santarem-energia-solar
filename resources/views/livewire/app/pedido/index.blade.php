@@ -17,6 +17,12 @@
                     <x-select.option label="Com pendências" value="sim" />
                     <x-select.option label="Sem pendências" value="nao" />
                 </x-select>
+                <x-select label="Por TRT" placeholder="Selecione uma situaçao" wire:model.live='trt'>
+                    <x-select.option label="Todas" value="" />
+                    @foreach (\App\Enums\SituacaoTRT::cases() as $trt)
+                        <x-select.option label="{{$trt->label()}}" value="{{$trt->name}}" />
+                    @endforeach
+                </x-select>
                 <div class="mt-2">
                     <x-checkbox label="Documentação pendente?" placeholder="Selecione uma situaçao"
                         wire:model.live='documentacao' />

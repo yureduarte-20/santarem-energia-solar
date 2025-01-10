@@ -57,4 +57,10 @@ class DashboardActions
         ) AS SIGNED) AS nao_entregue'))->first();
 
     }
+    public function trt()
+    {
+        return DB::table('pedidos')
+            ->select(DB::raw('COUNT(*) as qtde, trt as situacao'))
+            ->groupBy('trt')->get();
+    }
 }

@@ -16,6 +16,8 @@ class Index extends Component
     public $pendencia;
     #[Url(except: '', nullable: true)]
     public $documentacao;
+    #[Url(except: '', nullable: true)]
+    public $trt;
     public function render()
     {
         return view('livewire.app.pedido.index', [
@@ -37,6 +39,7 @@ class Index extends Component
                             fn($q3) => $q3->whereDoesntHave('arquivo')
                         )
                     )
+                    ->when($this->trt,fn($q) => $q->where('trt', $this->trt))
                     ->paginate(10)
         ]);
     }
