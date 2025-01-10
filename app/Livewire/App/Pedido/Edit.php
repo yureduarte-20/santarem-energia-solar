@@ -160,7 +160,13 @@ class Edit extends Component
             ['data_entrega' => $data_entrega] = $this->validate([
                 'data_entrega' => 'required|date'
             ]);
-            if($this->pedido->instalacao()->doesntExist()){
+            if ($this->pedido->instalacao()->doesntExist()) {
+                return $this->dialog()->error(
+                    'Instalação pendente',
+                    'Falta informar a data de instalação na aba "Informação da Instalação"'
+                );
+            }
+            if (empty($this->pedido->instalacao->data_instalada)) {
                 return $this->dialog()->error(
                     'Instalação pendente',
                     'Falta informar a data de instalação na aba "Informação da Instalação"'
