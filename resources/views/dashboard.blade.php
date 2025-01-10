@@ -1,87 +1,60 @@
 <x-app-layout>
     <x-general.dashboard>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6 mb-6">
             @can('show-valores')
-                <div class="bg-white rounded-md border border-gray-100 p-6 shadow-md shadow-black/5">
-                    <div class="flex justify-between mb-6">
-                        <div>
-                            <div class="flex items-center mb-1">
-                                <div class="text-2xl font-semibold">R$
-                                    {{ number_format($faturamento_valor_final, 2, ',', '.') }}</div>
-                            </div>
-                            <div class="text-sm font-medium text-gray-400">Faturamento <span>(Valor projeto Final)</span>
-                            </div>
-                        </div>
-                        <div class="dropdown">
-                            <button type="button" class="dropdown-toggle text-gray-400 hover:text-gray-600"><i
-                                    class="ri-more-fill"></i></button>
-                            <ul
-                                class="dropdown-menu shadow-md shadow-black/5 z-30 hidden py-1.5 rounded-md bg-white border border-gray-100 w-full max-w-[140px]">
-                                <li>
-                                    <a href="#"
-                                        class="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-blue-500 hover:bg-gray-50">Profile</a>
-                                </li>
-                                <li>
-                                    <a href="#"
-                                        class="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-blue-500 hover:bg-gray-50">Settings</a>
-                                </li>
-                                <li>
-                                    <a href="#"
-                                        class="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-blue-500 hover:bg-gray-50">Logout</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    {{-- <a href="/gebruikers" class="text-[#f84525] font-medium text-sm hover:text-red-800">View</a> --}}
-                </div>
 
                 <div class="bg-white rounded-md border border-gray-100 p-6 shadow-md shadow-black/5">
-                    <div class="flex justify-between mb-6">
-                        <div>
-                            <div class="flex items-center mb-1">
-                                <div class="text-2xl font-semibold">R$ {{ number_format($lucro, 2, ',', '.') }}</div>
-                            </div>
-                            <div class="text-sm font-medium text-gray-400">Lucro Bruto <span>(Valor projeto Final - Valor do
-                                    KIT)</span></div>
-                        </div>
-                        <div class="dropdown">
-                            <button type="button" class="dropdown-toggle text-gray-400 hover:text-gray-600"><i
-                                    class="ri-more-fill"></i></button>
-                            <ul
-                                class="dropdown-menu shadow-md shadow-black/5 z-30 hidden py-1.5 rounded-md bg-white border border-gray-100 w-full max-w-[140px]">
-                                <li>
-                                    <a href="#"
-                                        class="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-blue-500 hover:bg-gray-50">Profile</a>
-                                </li>
-                                <li>
-                                    <a href="#"
-                                        class="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-blue-500 hover:bg-gray-50">Settings</a>
-                                </li>
-                                <li>
-                                    <a href="#"
-                                        class="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-blue-500 hover:bg-gray-50">Logout</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-               
-                <div class="bg-white rounded-md border border-gray-100 p-6 shadow-md shadow-black/5">
-                    <x-apex.line 
+                    <x-apex.line
                         title="Faturamento por mês"
                         :series="[
-                            ['data' => $faturamento_mes->pluck('total_valor')->toArray(), 'name' => 'Faturamento'], 
+                            ['data' => $faturamento_mes->pluck('total_valor')->toArray(), 'name' => 'Faturamento'],
                             ['data' => $lucro_bruto_mes->pluck('lucro_bruto')->toArray(), 'name' => 'Lucro Bruto']
-                        ]" 
+                        ]"
                         :xaxis="[ 'categories' =>  $faturamento_mes->pluck('mes')->toArray() ]" />
                 </div>
-                
+
             @endcan
+
+            <div class="bg-white rounded-md border border-gray-100 p-6 shadow-md shadow-black/5">
+                <x-apex.pie
+                    :title="['align' => 'center', 'text' => 'Por Situação']"
+                    :series="$dados->map->contagem->toArray()"
+                    :labels="$dados->map->status->toArray()"
+                    onClickLegend="(chart, seriesIndex, opts) => {
+                        const data = {!! json_encode($dados->map->status_value->toArray()) !!} ;
+                        let url = `{{route('pedido.index')}}` ;
+                        url += '?status=' + data[seriesIndex] ;
+                        Livewire.navigate(url)
+                    }"
+                    />
+            </div>
+            <div class="bg-white rounded-md border border-gray-100 p-6 shadow-md shadow-black/5">
+                @if($pendencias->atendidas == 0 and $pendencias->nao_atendidas == 0)
+                    <p class="text-center">Sem pendências</p>
+                    @else
+                    <x-apex.pie
+                    :title="['align' => 'center', 'text' => 'Pendências de Engenheiros']"
+                    :series="[$pendencias->atendidas, $pendencias->nao_atendidas]"
+                    :labels="['Pendentes', 'Resolvidas']"
+                    />
+                @endif
+
+            </div>
             <div class="bg-white rounded-md border border-gray-100 p-6 shadow-md shadow-black/5">
 
-                <x-apex.bars :series="[['data' => $dados]]" :title="['text' => 'Por situação', 'align' => 'center']" :horizontal="false" />
+                <x-apex.pie
+                    :title="['align' => 'center', 'text' => 'Documentação Pendente']"
+                    :series="[intval ($pendencias_documentos->entregue), intval($pendencias_documentos->nao_entregue)]"
+                    :labels="['Entregues', 'Pendentes']"
+                    onClickLegend="(chart, seriesIndex, opts) => {
+                        const data = ['false', 'true'] ;
+                        let url = `{{route('pedido.index')}}` ;
+                        url += '?documentacao=' + data[seriesIndex] ;
+                        Livewire.navigate(url)
+                    }"
+                    />
             </div>
+
         </div>
     </x-general.dashboard>
 </x-app-layout>

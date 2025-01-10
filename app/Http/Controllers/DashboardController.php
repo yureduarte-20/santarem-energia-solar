@@ -15,16 +15,22 @@ class DashboardController extends Controller
     }
     public function index()
     {
-        $faturamento_valor_final = Pedido::sum('valor_contratual');
-        $lucro = Pedido::selectRaw('(SUM(valor_contratual) - SUM(valor)) as lucro')->first()->lucro;
         $dados = $this->actions->getStatus()->map(function ($item){
-            return [
-                'x' => $item->status->label(),
-                'y' => $item->contagem
+            return (object)[
+                'status' => $item->status->label(),
+                'contagem' => $item->contagem,
+                'status_value' =>$item->status->name
             ];
         });
         $faturamento_mes = $this->actions->getFaturamentoPorMes();
         $lucro_bruto_mes = $this->actions->getLucroBrutoPorMes();
-        return view('dashboard', compact('faturamento_valor_final', 'lucro', 'dados', 'faturamento_mes', 'lucro_bruto_mes'));
+
+        return view('dashboard', [
+            'faturamento_mes' => $faturamento_mes,
+            'lucro_bruto_mes' => $lucro_bruto_mes,
+            'dados' => $dados,
+            'pendencias' => $this->actions->pendencias(),
+            'pendencias_documentos' => $this->actions->pendencias_documentos()
+        ]);
     }
 }
