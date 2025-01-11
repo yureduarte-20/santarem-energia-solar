@@ -5,7 +5,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 mb-2">
             <x-input label="Data de Previsão de Instalação" type="date" wire:model='createForm.data_prevista' />
         </div>
-        @can('update-pedidos')
+        @can('edit-pedidos')
             <x-button color="primary" label="Salvar" wire:click='create' />
         @endcan
         @else
@@ -17,7 +17,7 @@
                 <x-textarea label="Observações" wire:model='updateForm.observacao' />
             </div>
         </div>
-        @can('update-pedidos')
+        @can('edit-pedidos')
         <x-button label="Salvar" color="primary" wire:click='update' />
         @endcan
 
