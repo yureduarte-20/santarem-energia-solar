@@ -16,6 +16,6 @@ class NotifyNewUserAction
             'password' => 'required'
         ])->validate();
         Notification::route('mail', $email)->
-            notify(new NewUserNotification($email, $password));
+            notifyNow(new NewUserNotification($email, $password));
     }
 }

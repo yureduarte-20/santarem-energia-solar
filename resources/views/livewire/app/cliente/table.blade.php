@@ -4,7 +4,7 @@
             <x-input wire:model.live.debounce="query" icon="search" label="Pesquisar" />
         </div>
         @can('create-clientes')
-        <x-button color="primary" x-on:click="Livewire.navigate('{{ route('cliente.create') }}')" label="Criar" />
+            <x-button color="primary" x-on:click="Livewire.navigate('{{ route('cliente.create') }}')" label="Criar" />
         @endcan
     </section>
 
@@ -25,25 +25,41 @@
                     </x-table.data-column>
                     <x-table.data-column>
                         @can('show-pedidos')
-                            @if($eng->pedidos()->latest()->first())
-                                <x-button href="{{route('pedido.edit', $eng->pedidos()->latest()->first() )}}" label="Pedido" color="primary" />
+                            @if ($eng->pedidos()->latest()->first())
+                                <div class="mr-2">
+                                    <x-button href="{{ route('pedido.edit', $eng->pedidos()->latest()->first()) }}"
+                                        label="Pedido" color="primary" />
+                                </div>
                             @endif
                         @endcan
                         @can('edit-clientes')
-                            <x-button color="secondary" icon="pencil" x-on:click="Livewire.navigate('{{route('cliente.edit', $eng)}}')" />
+                            <div class="mr-2">
+                                <x-button color="secondary" icon="pencil"
+                                    x-on:click="Livewire.navigate('{{ route('cliente.edit', $eng) }}')" />
+                            </div>
+                        @endcan
+                        @can('delete-clientes')
+                        <div class="">
+                            <x-button color="negative" icon="trash" x-on:click="$wireui.confirmDialog({
+                                title:'Tem certeza que deseja apagar este cliente?',
+                                description: 'Essa ação não pode ser desfeita.',
+                                method: 'delete',
+                                params: '{{$eng->id}}'
+                            } , '{{$this->getId()}}')" />
+                        </div>
                         @endcan
                     </x-table.data-column>
                 </x-table.data-row>
-                @empty
+            @empty
                 <x-table.data-row>
                     <x-table.data-column>
                         Sem Clientes cadastrados
                     </x-table.data-column>
                     <x-table.data-column>
-                        
+
                     </x-table.data-column>
                     <x-table.data-column>
-                        
+
                     </x-table.data-column>
                 </x-table.data-row>
             @endforelse

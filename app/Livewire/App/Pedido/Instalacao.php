@@ -27,6 +27,7 @@ class Instalacao extends Component
 
     public function create()
     {
+        $this->authorize('update', $this->pedido);
         if ($this->pedido->instalacao()->exists()) {
             return $this->dialog()->error('Instalação já cadastrada');
         }
@@ -36,6 +37,7 @@ class Instalacao extends Component
     }
     public function update()
     {
+        $this->authorize('update', $this->pedido);
         $result=$this->updateForm->save();
         $result and $this->dialog()->success('Atualizado com sucesso');
     }
