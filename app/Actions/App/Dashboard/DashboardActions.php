@@ -28,7 +28,7 @@ class DashboardActions
     public function getLucroBrutoPorMes()
     {
         return DB::table('pedidos')
-            ->selectRaw("(SUM(valor_contratual) - SUM(valor)) as lucro_bruto, date_format(data_pedido, '%m/%Y') as mes")
+            ->selectRaw("(SUM(valor_contratual) - SUM(valor)) as lucro_bruto, SUM(valor_contratual) as total_valor, date_format(data_pedido, '%m/%Y') as mes")
             ->groupBy('mes')
             ->orderByDesc('mes')
             ->limit(12)

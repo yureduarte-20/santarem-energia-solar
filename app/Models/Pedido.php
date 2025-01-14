@@ -129,4 +129,8 @@ class Pedido extends Model
     {
         return $this->hasMany(Pendencia::class);
     }
+    public function relogio_bidirecional()
+    {
+        return $this->hasOne(RelogioBidirecional::class);
+    }
 }

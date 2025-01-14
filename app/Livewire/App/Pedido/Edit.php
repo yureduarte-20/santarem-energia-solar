@@ -172,6 +172,18 @@ class Edit extends Component
                     'Falta informar a data de instalação na aba "Informação da Instalação"'
                 );
             }
+            if(empty($this->pedido->relogio_bidirecional)){
+                return $this->dialog()->error(
+                    'Informações do relógio pendente',
+                    'Falta informar a situação do relógio na aba "Informação da Instalação"'
+                );
+            }
+            if(empty($this->pedido->relogio_bidirecional->data_retorno)){
+                return $this->dialog()->error(
+                    'Informações do relógio pendente',
+                    'Falta informar a data de retorno do relógio na aba "Informação da Instalação"'
+                );
+            }
             $this->pedido->update([
                 'entregue' => true,
                 'data_entregue' => $data_entrega,

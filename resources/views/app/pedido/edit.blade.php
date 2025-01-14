@@ -59,6 +59,9 @@
                 <div class="mb-2">
                     <livewire:app.pedido.instalacao :pedido="$pedido" />
                 </div>
+                <div class="mb-2">
+                    <livewire:app.pedido.relogio-bidirecional :pedido="$pedido" />
+                </div>
             </div>
         </div>
     </x-general.dashboard>

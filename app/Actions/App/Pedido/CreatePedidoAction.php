@@ -1,19 +1,20 @@
 <?php
 namespace App\Actions\App\Pedido;
 
+use App\Actions\App\AbstractCrudAction;
 use App\Enums\TipoRede;
 use App\Models\Pedido;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
-class CreatePedidoAction
+class CreatePedidoAction extends AbstractCrudAction
 {
-
     public function __invoke(array $input, string $errorBag = null)
     {
-        $validator = Validator::make($input, $this->getRules());
+        $validator = $this->validator($input);
         $validated = $errorBag ? $validator->validateWithBag($errorBag) : $validator->validate();
+
         return DB::transaction(function () use ($validated) {
             $pedido = Pedido::create($validated);
             $pedido->users()->attach($validated['user_id']);
@@ -30,7 +31,11 @@ class CreatePedidoAction
             return $pedido;
         });
     }
-    public function getRules(): array
+    public function getRules()
+    {
+        return $this->rules();
+    }
+    public function rules(): array
     {
         return [
             'numero' => 'required|unique:pedidos,numero',
@@ -50,6 +55,16 @@ class CreatePedidoAction
             'rateios' => 'nullable|array',
             'rateios.*.nome' => 'required|min:3',
             'adequacao_poste' => 'required|boolean'
+        ];
+    }
+    public function attributes()
+    {
+        return [
+            'cliente_id' => 'cliente',
+            'user_id' => 'vendedor',
+            'tipo_rede' => 'tipo de rede',
+            'engenheiros_homologacao' => 'engenheiro',
+            'adequacao_poste' => 'adequação de poste'
         ];
     }
 }
