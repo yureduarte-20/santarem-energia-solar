@@ -114,7 +114,8 @@ class Pedido extends Model
     public function homologacao_engenheiros()
     {
         return $this->belongsToMany(Engenheiro::class, 'homologacao_engenheiros')
-            ->withPivot(['data'])
+            ->withPivot(['data', 'data_homologacao', 'observacoes'])
+            ->using(HomologacaoEngenheiro::class)
             ->withTimestamps();
     }
     public function rateios()

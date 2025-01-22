@@ -32,23 +32,24 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Engenheiro extends Model
 {
-    protected $fillable = [ 'cpf', 'conta_id'];
-    protected $appends =[
+    protected $fillable = ['cpf', 'conta_id'];
+    protected $appends = [
         'nome'
     ];
 
-    public function pedidos() 
+    public function pedidos()
     {
         return $this->belongsToMany(Pedido::class, 'homologacao_engenheiros')
-        ->withPivot(['data'])
-        ->withTimestamps();
+            ->withPivot(['id','data', 'data_homologacao', 'observacoes'])
+            ->using(HomologacaoEngenheiro::class)
+            ->withTimestamps();
     }
     public function conta()
     {
         return $this->belongsTo(Conta::class);
     }
-    public function nome() : Attribute
+    public function nome(): Attribute
     {
-        return Attribute::make(get: fn(mixed $value) => $this->conta()->first()->user->name );
+        return Attribute::make(get: fn(mixed $value) => $this->conta()->first()->user->name);
     }
 }

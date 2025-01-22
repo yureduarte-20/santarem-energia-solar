@@ -15,6 +15,7 @@ use App\Services\WhatsappServiceInterface;
 use Carbon\Carbon;
 use Gate;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -45,6 +46,10 @@ class Edit extends Component
     public $adequacao_poste;
     public $trt;
     public $rateios;
+
+    public $data;
+    public $data_homologacao;
+    public $observacoes;
     public function boot(WhatsappServiceInterface $whatsappService)
     {
         $this->whatsappService = $whatsappService;
@@ -98,10 +103,21 @@ class Edit extends Component
     public function homologar()
     {
         $result = Gate::inspect('homologar', $this->pedido);
+        $validated = $this->validate([
+            'data_homologacao' => 'required|date',
+            'observacoes' => 'nullable|min:2'
+        ]);
         if ($result->denied()) {
             return $this->notification()->error('Não autorizado', 'Você não tem autorização para homologar este projeto');
         }
         if ($this->pedido->status == StatusPedido::ENVIADO_ENGENHEIRO) {
+            $ids = $this->pedido->homologacao_engenheiros->pluck('id')->toArray();
+
+            DB::table('homologacao_engenheiros')
+                ->whereIn('engenheiro_id', $ids)
+                ->where('pedido_id', $this->pedido->id)
+                ->update($validated);
+
             $this->pedido->status = StatusPedido::HOMOLOGADO;
             $status = $this->pedido->save();
             $status and $this->notification()->success("Atualizado com sucesso");
@@ -138,6 +154,9 @@ class Edit extends Component
     public function updateStatus(string $status)
     {
         if (StatusPedido::ENVIADO_ENGENHEIRO->name == $status and $this->pedido->status == StatusPedido::ENVIAR_ENGENHEIRO) {
+            ['data' => $data] = $this->validate([
+                'data' => 'required|date'
+            ]);
             if ($this->pedido->pedido_documentos()->where(['entregue' => false, 'enviar_homologacao' => true])->exists()) {
                 $this->dialog()->error("Documentação pendente", 'Há documentos que precisam ser anexados');
                 return;
@@ -148,6 +167,13 @@ class Edit extends Component
             ) {
                 $this->dialog()->error("O projeto não tem engenheiros");
             }
+            $ids = $this->pedido->homologacao_engenheiros->pluck('id')->toArray();
+
+            DB::table('homologacao_engenheiros')
+                ->whereIn('engenheiro_id', $ids)
+                ->where('pedido_id', $this->pedido->id)
+                ->update(['data' => $data]);
+
 
             $this->pedido->update([
                 'status' => StatusPedido::ENVIADO_ENGENHEIRO
@@ -172,13 +198,13 @@ class Edit extends Component
                     'Falta informar a data de instalação na aba "Informação da Instalação"'
                 );
             }
-            if(empty($this->pedido->relogio_bidirecional)){
+            if (empty($this->pedido->relogio_bidirecional)) {
                 return $this->dialog()->error(
                     'Informações do relógio pendente',
                     'Falta informar a situação do relógio na aba "Informação da Instalação"'
                 );
             }
-            if(empty($this->pedido->relogio_bidirecional->data_retorno)){
+            if (empty($this->pedido->relogio_bidirecional->data_retorno)) {
                 return $this->dialog()->error(
                     'Informações do relógio pendente',
                     'Falta informar a data de retorno do relógio na aba "Informação da Instalação"'

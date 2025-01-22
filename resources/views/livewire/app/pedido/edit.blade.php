@@ -71,8 +71,8 @@
                     @case(\App\Enums\StatusPedido::ENVIAR_ENGENHEIRO)
                         <x-button color="warning" wire:ignore
                             x-on:click="$wireui.confirmDialog({
-
-                        'title':'Deseja declarar a homologação para engenheiro?',
+                        id:'dialog-enviado-engenheiro',
+                        title:'Deseja declarar a homologação para engenheiro?',
                         description:'Deseja declarar que o projeto foi encaminhado ao engenheiro?',
                         method:'updateStatus',
                         params:'{{ \App\Enums\StatusPedido::ENVIADO_ENGENHEIRO->name }}'
@@ -99,6 +99,7 @@
                     @case(\App\Enums\StatusPedido::ENVIADO_ENGENHEIRO)
                         <x-button label="Homologar o projeto" wire:ignore color="warning"
                             x-on:click="$wireui.confirmDialog({
+                                id:'dialog-homologar',
                                 title:'Deseja declarar com que homologou?',
                                 description:'Deseja declarar que homologou o projeto?',
                                 method:'homologar'
@@ -107,7 +108,27 @@
                 @endswitch
             @endcan
         </div>
-
+        <div class="lg:col-span-3">
+            <h2>Informações permitentes ao projeto</h2>
+            <ul>
+                @if ($pedido->homologacao_engenheiros()?->first()?->pivot?->data)
+                    <li class="text-green-800">- Enviado para o engenheiro dia
+                        {{ $pedido->homologacao_engenheiros()?->first()?->pivot?->data->format('d/m/Y') }}</li>
+                @endif
+                @if ($pedido->homologacao_engenheiros()?->first()?->pivot?->data_homologacao)
+                    <li class="text-green-800">
+                        <span class="block">- Homologado dia
+                            {{ $pedido->homologacao_engenheiros()?->first()?->pivot?->data_homologacao->format('d/m/Y') }}
+                        </span>
+                        @if ($pedido->homologacao_engenheiros()?->first()?->pivot?->observacoes)
+                            <span class="block">
+                                &nbsp; &nbsp; &nbsp; Observações: {{$pedido->homologacao_engenheiros()?->first()?->pivot?->observacoes}}
+                            </span>
+                        @endif
+                    </li>
+                @endif
+            </ul>
+        </div>
         <div class="lg:col-span-3">
             <x-textarea label="Observações" wire:model='descricao'></x-textarea>
         </div>
@@ -145,5 +166,12 @@
 
     <x-dialog id="encerrar">
         <x-input type="date" label="Data de Entrega" wire:model='data_entrega' />
+    </x-dialog>
+    <x-dialog id="dialog-enviado-engenheiro">
+        <x-input wire:model='data' label="Enviado dia" type="date" />
+    </x-dialog>
+    <x-dialog id="dialog-homologar">
+        <x-input wire:model='data_homologacao' label="Homologado dia" type="date" />
+        <x-textarea wire:model='observacoes' label="Observações" />
     </x-dialog>
 </div>
